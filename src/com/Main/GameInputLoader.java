@@ -1,48 +1,65 @@
-package Main;
+package com.Main;
 
+import com.Heroes.Player;
+import com.Heroes.PlayerFactory;
+import com.Map.Map;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import fileio.FileSystem;
+import  java.util.Scanner;
 
     public final class GameInputLoader {
         private final String mInputPath;
-        private final String mOutputPath;
 
-        GameInputLoader(final String inputPath, final String outputPath) {
+        GameInputLoader(final String inputPath) {
             mInputPath = inputPath;
-            mOutputPath = outputPath;
         }
 
         public GameInput load() {
-            List<Integer> assetsIds = new ArrayList<>();
-            List<String> playerOrder = new ArrayList<>();
-            int rounds = 0;
-            int noPlayers = 0;
-            int noGoods = 0;
+
+            List<Player> playersOrder = new ArrayList<>();
+            List<String> roundMoves = new ArrayList<>();
 
             try {
-                FileSystem fs = new FileSystem(mInputPath, mOutputPath);
+                File in = new File(mInputPath);
+                Scanner sc = new Scanner(in);
 
-                rounds = fs.nextInt();
-                noPlayers = fs.nextInt();
+                int row = sc.nextInt();
+                int col = sc.nextInt();
 
-                for (int i = 0; i < noPlayers; ++i) {
-                    playerOrder.add(fs.nextWord());
+                List<List<Character>> mapHelper = new ArrayList<>();
+
+                for (int i = 0; i < row; i++) {
+                    mapHelper.add(new ArrayList<>());
+                    String oneRow = sc.next();
+                    for (int j = 0; j < col; j++) {
+                        mapHelper.get(i).add(oneRow.charAt(j));
+                    }
                 }
 
-                noGoods = fs.nextInt();
+                Map instance = Map.getInstance(row, col, mapHelper);
 
-                for (int i = 0; i < noGoods; ++i) {
-                    assetsIds.add(fs.nextInt());
+                int nrPlayers = sc.nextInt();
+                PlayerFactory playerFactory = PlayerFactory.getInstance();
+
+                for (int i = 0; i < nrPlayers; i++) {
+                    Character type = sc.next().charAt(0);
+                    int x = sc.nextInt();
+                    int y = sc.nextInt();
+                    playersOrder.add(playerFactory.createHero(type, x, y));
                 }
 
-                fs.close();
+                int nrRounds = sc.nextInt();
 
+                for (int i = 0; i < nrRounds; i++) {
+                    roundMoves.add(sc.next());
+                }
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
 
-            return new GameInput(rounds, assetsIds, playerOrder);
+            return new GameInput(playersOrder, roundMoves);
         }
     }
 

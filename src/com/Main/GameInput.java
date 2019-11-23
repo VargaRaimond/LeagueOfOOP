@@ -1,30 +1,31 @@
-package Main;
+package com.Main;
+
+import com.Heroes.Player;
 
 import java.util.List;
 
     public class GameInput {
-        // DO NOT MODIFY
-        private final List<Integer> mAssetOrder;
-        private final List<String> mPlayersOrder;
+        private final List<String> mRoundMoves;
+        private final List<Player> mPlayersOrder;
         private int mRounds;
 
         public GameInput() {
-            mAssetOrder = null;
+            mRoundMoves = null;
             mPlayersOrder = null;
             mRounds = -1;
         }
 
-        public GameInput(final int rounds, final List<Integer> assets, final List<String> players) {
-            mAssetOrder = assets;
+        public GameInput(final List<Player> players, final List<String> roundMoves) {
+            mRoundMoves = roundMoves;
             mPlayersOrder = players;
-            mRounds = rounds;
+            mRounds = roundMoves.size();
         }
 
-        public final List<Integer> getAssetIds() {
-            return mAssetOrder;
+        public final String getMovesAt(int round) {
+            return mRoundMoves.get(round);
         }
 
-        public final List<String> getPlayerNames() {
+        public final List<Player> getPlayers() {
             return mPlayersOrder;
         }
 
@@ -33,8 +34,8 @@ import java.util.List;
         }
 
         public final boolean isValidInput() {
-            boolean membersInstantiated = mAssetOrder != null && mPlayersOrder != null;
-            boolean membersNotEmpty = mAssetOrder.size() > 0 && mPlayersOrder.size() > 0 && mRounds > 0;
+            boolean membersInstantiated = mRoundMoves != null && mPlayersOrder != null;
+            boolean membersNotEmpty = mRoundMoves.size() > 0 && mPlayersOrder.size() > 0 && mRounds > 0;
 
             return membersInstantiated && membersNotEmpty;
         }

@@ -1,4 +1,8 @@
 package com.Heroes;
 
-public class Mage {
+public class Wizard extends Player {
+
+    Wizard(int x, int y) {
+        super(x,y);
+    }
 }
