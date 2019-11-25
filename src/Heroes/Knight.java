@@ -1,11 +1,12 @@
-package com.Heroes;
+package Heroes;
 
 import java.awt.*;
 
-public class Rogue extends Player {
-    public Rogue(Point coordinates) {
+public class Knight extends Player {
+
+    public Knight(Point coordinates) {
         super(coordinates);
-        type = PlayerType.Rogue;
+        type = PlayerType.Knight;
     }
 
     @Override
@@ -32,4 +33,7 @@ public class Rogue extends Player {
     public void dealDamage(Pyromancer pyromancer) {
 
     }
+
+
+
 }

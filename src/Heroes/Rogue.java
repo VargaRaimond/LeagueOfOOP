@@ -1,11 +1,11 @@
-package com.Heroes;
+package Heroes;
 
 import java.awt.*;
 
-public class Pyromancer extends Player {
-    public Pyromancer(Point coordinates) {
+public class Rogue extends Player {
+    public Rogue(Point coordinates) {
         super(coordinates);
-        type = PlayerType.Pyromancer;
+        type = PlayerType.Rogue;
     }
 
     @Override

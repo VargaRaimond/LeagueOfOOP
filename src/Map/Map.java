@@ -1,5 +1,6 @@
-package com.Map;
+package Map;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +11,12 @@ public class Map {
     public List<List<MapCell>> map;
 
     private Map(int row, int col, List<List<Character>> mapHelper) {
+        LandFactory landFactory = LandFactory.getInstance();
         map = new ArrayList<>(row);
         for(int i = 0; i < row; i++) {
             map.add(new ArrayList<>());
             for(int j = 0; j < col; j++) {
-                map.get(i).add(new MapCell(mapHelper.get(i).get(j)));
+                map.get(i).add(landFactory.createLand(mapHelper.get(i).get(j)));
             }
         }
     }
@@ -28,6 +30,10 @@ public class Map {
 
     public static Map getInstance() {
         return instance;
+    }
+
+    public MapCell getCellAt(Point coordinates) {
+        return map.get(coordinates.x).get(coordinates.y);
     }
 
     public void print() {

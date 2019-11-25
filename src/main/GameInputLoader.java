@@ -1,8 +1,8 @@
-package com.Main;
+package main;
 
-import com.Heroes.Player;
-import com.Heroes.PlayerFactory;
-import com.Map.Map;
+import Heroes.Player;
+import Heroes.PlayerFactory;
+import Map.Map;
 
 import java.awt.*;
 import java.io.File;
@@ -13,7 +13,7 @@ import  java.util.Scanner;
     public final class GameInputLoader {
         private final String mInputPath;
 
-        GameInputLoader(final String inputPath) {
+        public GameInputLoader(final String inputPath) {
             mInputPath = inputPath;
         }
 

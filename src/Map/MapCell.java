@@ -1,11 +1,13 @@
-package com.Map;
+package Map;
 
 public class MapCell {
 
-    Character type;
+    public LandType type;
+    public float landModifier;
 
-    MapCell(Character type) {
+    MapCell(LandType type, float modifier) {
         this.type = type;
+        landModifier = modifier;
     }
 
     @Override

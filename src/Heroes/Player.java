@@ -1,4 +1,8 @@
-package com.Heroes;
+package Heroes;
+
+import Map.LandType;
+import Map.Map;
+import Map.MapCell;
 
 import java.awt.*;
 
@@ -7,14 +11,23 @@ public abstract class Player {
     Point coordinates;
     private int maxHp;
     private int currentHp;
-    int xp;
-    int hpScalePerLevel;
-    int level;
+    protected int xp;
+    public int hpScalePerLevel;
+    protected int level;
+    protected LandType landWithBonus;
+    protected MapCell currentLand;
+    public int currentDotDuration;
+    public int currentDotDamage;
+    public boolean stunned;
 
     Player(Point coordinates) {
         this.coordinates = coordinates;
         level = 0;
         xp = 0;
+        currentLand = Map.getInstance().getCellAt(coordinates);
+        currentDotDuration = 0;
+        currentDotDamage = 0;
+        stunned = false;
     }
 
     public int getMaxHp() {
@@ -23,6 +36,22 @@ public abstract class Player {
 
     public void setMaxHp(int maxHp) {
         this.maxHp = maxHp;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public int getCurrentHp() {
@@ -53,6 +82,7 @@ public abstract class Player {
                 break;
             default : break;
         }
+        currentLand = Map.getInstance().getCellAt(coordinates);
     }
 
     public abstract void takeDamage(Player other);

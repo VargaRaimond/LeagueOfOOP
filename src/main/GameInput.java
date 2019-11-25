@@ -1,6 +1,6 @@
-package com.Main;
+package main;
 
-import com.Heroes.Player;
+import Heroes.Player;
 
 import java.util.List;
 
