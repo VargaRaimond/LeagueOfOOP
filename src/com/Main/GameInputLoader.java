@@ -4,6 +4,7 @@ import com.Heroes.Player;
 import com.Heroes.PlayerFactory;
 import com.Map.Map;
 
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,9 @@ import  java.util.Scanner;
                     Character type = sc.next().charAt(0);
                     int x = sc.nextInt();
                     int y = sc.nextInt();
-                    playersOrder.add(playerFactory.createHero(type, x, y));
+                    Point coordinates = new Point(x, y);
+                    playersOrder.add(playerFactory.createHero(type, coordinates));
                 }
-
                 int nrRounds = sc.nextInt();
 
                 for (int i = 0; i < nrRounds; i++) {
