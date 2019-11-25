@@ -1,8 +1,8 @@
-package Heroes;
+package heroes;
 
-import Map.LandType;
-import Map.Map;
-import Map.MapCell;
+import map.LandType;
+import map.Map;
+import map.MapCell;
 
 import java.awt.*;
 
@@ -67,6 +67,7 @@ public abstract class Player {
     }
 
     public void move(Character direction) {
+        if(stunned || getCurrentHp() <= 0) return;
         switch (direction) {
             case('U') :
                 coordinates.x--;

@@ -1,6 +1,6 @@
-package Heroes.Abilities;
+package heroes.abilities;
 
-import Heroes.PlayerType;
+import heroes.PlayerType;
 
 import java.util.HashMap;
 import java.util.Map;

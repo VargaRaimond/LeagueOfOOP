@@ -1,9 +1,8 @@
-package Heroes.Abilities;
+package heroes.abilities;
 
-import Heroes.Player;
-import Heroes.PlayerType;
+import heroes.Player;
 
-public class Drain extends Ability {
+public final class Drain extends Ability {
 
     Drain(final float baseDmg, final float lvlScale, final float rogueDmg, final float knightDmg, final float pyroDmg, final float wizardDmg) {
         super(baseDmg, lvlScale, rogueDmg, knightDmg, pyroDmg, wizardDmg);

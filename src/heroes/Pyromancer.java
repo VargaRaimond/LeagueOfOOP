@@ -1,14 +1,14 @@
-package Heroes;
+package heroes;
 
-import Heroes.Abilities.AbilityFactory;
-import Heroes.Abilities.AbilityType;
-import Heroes.Abilities.Fireblast;
-import Heroes.Abilities.Ignite;
-import Map.LandType;
+import heroes.abilities.AbilityFactory;
+import heroes.abilities.AbilityType;
+import heroes.abilities.Fireblast;
+import heroes.abilities.Ignite;
+import map.LandType;
 
 import java.awt.*;
 
-public class Pyromancer extends Player {
+public final class Pyromancer extends Player {
 
     Fireblast fireblast;
     Ignite ignite;
@@ -34,12 +34,37 @@ public class Pyromancer extends Player {
 
     @Override
     public void dealDamage(Knight knight) {
+        int baseDmg1, baseDmg2;
 
+        if(currentLand.type.equals(landWithBonus)) {
+            baseDmg1 = fireblast.computeBaseDamage(level, currentLand.landModifier);
+            baseDmg2 = ignite.computeBaseDamage(level, currentLand.landModifier);
+            ignite.computeDot(knight, level, currentLand.landModifier);
+        } else {
+            baseDmg1 = fireblast.computeBaseDamage(level, 0f);
+            baseDmg2 = ignite.computeBaseDamage(level, 0f);
+            ignite.computeDot(knight, level, 0f);
+        }
+
+        int dmg = fireblast.addRaceModif(knight, baseDmg1) + ignite.addRaceModif(knight, baseDmg2);
+        knight.setCurrentHp(knight.getCurrentHp() - dmg);
     }
 
     @Override
     public void dealDamage(Rogue rogue) {
+        int baseDmg1, baseDmg2;
 
+        if(currentLand.type.equals(landWithBonus)) {
+            baseDmg1 = fireblast.computeBaseDamage(level, currentLand.landModifier);
+            baseDmg2 = ignite.computeBaseDamage(level, currentLand.landModifier);
+            ignite.computeDot(rogue, level, currentLand.landModifier);
+        } else {
+            baseDmg1 = fireblast.computeBaseDamage(level, 0f);
+            baseDmg2 = ignite.computeBaseDamage(level, 0f);
+            ignite.computeDot(rogue, level, 0f);
+        }
+        int dmg = fireblast.addRaceModif(rogue, baseDmg1) + ignite.addRaceModif(rogue, baseDmg2);
+        rogue.setCurrentHp(rogue.getCurrentHp() - dmg);
     }
 
     @Override
@@ -53,7 +78,7 @@ public class Pyromancer extends Player {
         } else {
             baseDmg1 = fireblast.computeBaseDamage(level, 0f);
             baseDmg2 = ignite.computeBaseDamage(level, 0f);
-            ignite.computeDot(wizard, level, currentLand.landModifier);
+            ignite.computeDot(wizard, level, 0f);
         }
         wizard.dmgForDeflect = baseDmg1 + baseDmg2;
         int dmg = fireblast.addRaceModif(wizard, baseDmg1) + ignite.addRaceModif(wizard, baseDmg2);
@@ -71,7 +96,7 @@ public class Pyromancer extends Player {
         } else {
             baseDmg1 = fireblast.computeBaseDamage(level, 0f);
             baseDmg2 = ignite.computeBaseDamage(level, 0f);
-            ignite.computeDot(pyromancer, level, currentLand.landModifier);
+            ignite.computeDot(pyromancer, level, 0f);
         }
 
         int dmg = fireblast.addRaceModif(pyromancer, baseDmg1) + ignite.addRaceModif(pyromancer, baseDmg2);

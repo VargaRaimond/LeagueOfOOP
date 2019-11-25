@@ -1,8 +1,8 @@
-package Heroes.Abilities;
+package heroes.abilities;
 
-import Heroes.Player;
+import heroes.Player;
 
-public class Fireblast extends Ability {
+public final class Fireblast extends Ability {
     Fireblast(final float baseDmg, final float lvlScale, final float rogueDmg, final float knightDmg, final float pyroDmg, final float wizardDmg) {
         super(baseDmg, lvlScale, rogueDmg, knightDmg, pyroDmg, wizardDmg);
         type = AbilityType.Fireblast;

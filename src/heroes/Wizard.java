@@ -1,11 +1,11 @@
-package Heroes;
+package heroes;
 
-import Heroes.Abilities.*;
-import Map.LandType;
+import heroes.abilities.*;
+import map.LandType;
 
 import java.awt.*;
 
-public class Wizard extends Player {
+public final class Wizard extends Player {
 
     Drain drain;
     Deflect deflect;
@@ -45,12 +45,28 @@ public class Wizard extends Player {
 
     @Override
     public void dealDamage(Knight knight) {
-
+        int dmg1, dmg2;
+        if(currentLand.type.equals(landWithBonus)) {
+            dmg1 = drain.computeBaseDamage(knight, level, currentLand.landModifier);
+            dmg2 = deflect.computeBaseDamage(knight, level, currentLand.landModifier, dmgForDeflect);
+        } else {
+            dmg1 = drain.computeBaseDamage(knight, level, 0f);
+            dmg2 = deflect.computeBaseDamage(knight, level, 0f, dmgForDeflect);
+        }
+        knight.setCurrentHp(knight.getCurrentHp() - dmg1 - dmg2);
     }
 
     @Override
     public void dealDamage(Rogue rogue) {
-
+        int dmg1, dmg2;
+        if(currentLand.type.equals(landWithBonus)) {
+            dmg1 = drain.computeBaseDamage(rogue, level, currentLand.landModifier);
+            dmg2 = deflect.computeBaseDamage(rogue, level, currentLand.landModifier, dmgForDeflect);
+        } else {
+            dmg1 = drain.computeBaseDamage(rogue, level, 0f);
+            dmg2 = deflect.computeBaseDamage(rogue, level, 0f, dmgForDeflect);
+        }
+        rogue.setCurrentHp(rogue.getCurrentHp() - dmg1 - dmg2);
     }
 
     @Override

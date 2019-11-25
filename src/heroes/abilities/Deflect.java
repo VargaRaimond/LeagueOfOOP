@@ -1,7 +1,6 @@
-package Heroes.Abilities;
+package heroes.abilities;
 
-import Heroes.Player;
-import Heroes.PlayerType;
+import heroes.Player;
 
 public final class Deflect extends Ability {
 

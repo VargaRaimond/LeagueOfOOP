@@ -1,8 +1,8 @@
-package Heroes.Abilities;
+package heroes.abilities;
 
-import Heroes.Player;
+import heroes.Player;
 
-public class Ignite extends Ability {
+public final class Ignite extends Ability {
 
     float baseDotDmg;
     float dotLvlScale;
@@ -29,7 +29,7 @@ public class Ignite extends Ability {
     public void computeDot(Player player, int level, float landModifier) {
         float dot = baseDotDmg + level * dotLvlScale;
         dot += dot * landModifier;
-        player.currentDotDamage = Math.round(dot * modifierByRace.get(player.type));
+        player.currentDotDamage = Math.round(dot + dot * modifierByRace.get(player.type));
         player.currentDotDuration = dotDuration;
         player.stunned = false;
     }

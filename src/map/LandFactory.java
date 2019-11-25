@@ -1,6 +1,6 @@
-package Map;
+package map;
 
-public class LandFactory {
+public final class LandFactory {
     private static LandFactory instance;
 
     public static LandFactory getInstance() {
@@ -11,13 +11,13 @@ public class LandFactory {
     }
 
     private static class LandModifiers {
-        public static float LAND_BONUS = 0.15f;
-        public static float VOLCANIC_BONUS = 0.25f;
-        public static float WOODS_BONUS = 0.15f;
-        public static float DESERT_BONUS = 0.1f;
+        public static final float LAND_BONUS = 0.15f;
+        public static final float VOLCANIC_BONUS = 0.25f;
+        public static final float WOODS_BONUS = 0.15f;
+        public static final float DESERT_BONUS = 0.1f;
     }
 
-    public MapCell createLand(Character type) {
+     MapCell createLand(final Character type) {
         switch (type) {
             case('L'):
                 return new MapCell(LandType.Land, LandModifiers.LAND_BONUS);
