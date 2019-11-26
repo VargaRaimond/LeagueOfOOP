@@ -1,11 +1,9 @@
 package heroes;
 
-import java.awt.*;
+import java.awt.Point;
 
-public class PlayerFactory {
+public final class PlayerFactory {
     private static PlayerFactory instance;
-
-    private PlayerFactory() {};
 
     private static class HeroSpecs {
         public static final int WIZARD_BASE_HP = 400;
@@ -22,18 +20,22 @@ public class PlayerFactory {
     }
 
     public static PlayerFactory getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new PlayerFactory();
         }
         return instance;
     }
 
-    public Player createHero(final Character type, Point coordinates) {
+    public Player createHero(final Character type, final Point position) {
         switch (type) {
-            case('W'): return new Wizard(coordinates, HeroSpecs.WIZARD_BASE_HP, HeroSpecs.WIZARD_HP_SCALE);
-            case('K'): return new Knight(coordinates, HeroSpecs.KNIGHT_BASE_HP, HeroSpecs.KNIGHT_HP_SCALE);
-            case('P'): return new Pyromancer(coordinates, HeroSpecs.PYRO_BASE_HP, HeroSpecs.PYRO_HP_SCALE);
-            case('R'): return new Rogue(coordinates, HeroSpecs.ROGUE_BASE_HP, HeroSpecs.ROGUE_HP_SCALE);
+            case('W'):
+                return new Wizard(position, HeroSpecs.WIZARD_BASE_HP, HeroSpecs.WIZARD_HP_SCALE);
+            case('K'):
+                return new Knight(position, HeroSpecs.KNIGHT_BASE_HP, HeroSpecs.KNIGHT_HP_SCALE);
+            case('P'):
+                return new Pyromancer(position, HeroSpecs.PYRO_BASE_HP, HeroSpecs.PYRO_HP_SCALE);
+            case('R'):
+                return new Rogue(position, HeroSpecs.ROGUE_BASE_HP, HeroSpecs.ROGUE_HP_SCALE);
             default: return null;
         }
     }

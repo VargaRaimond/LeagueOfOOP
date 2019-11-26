@@ -21,15 +21,15 @@ import java.util.List;
             mRounds = roundMoves.size();
         }
 
-        final String getMovesAt(int round) {
+         String getMovesAt(final int round) {
             return mRoundMoves.get(round);
         }
 
-        final List<Player> getPlayers() {
+         List<Player> getPlayers() {
             return mPlayersOrder;
         }
 
-        final int getRounds() {
+         int getRounds() {
             return mRounds;
         }
 

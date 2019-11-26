@@ -1,5 +1,6 @@
 package main;
 
+import common.Constants;
 import heroes.Player;
 import heroes.PlayerType;
 
@@ -11,77 +12,78 @@ public final class GameEngine {
 
     private List<Player> allPlayers;
 
-    public void computeRounds(GameInput input, String out) {
+    public void computeRounds(final GameInput input, final String out) {
         allPlayers = input.getPlayers();
 
-        for (int k = 0; k < input.getRounds(); k++) {
-            moveHeroes(input.getMovesAt(k));
+        for (int roundNr = 0; roundNr < input.getRounds(); roundNr++) {
+            moveHeroes(input.getMovesAt(roundNr));
 
             for (Player hero : allPlayers) {
-                if (hero.currentDotDamage != 0 || hero.currentDotDuration != 0) {
-                    hero.setCurrentHp(hero.getCurrentHp() - hero.currentDotDamage);
-                    hero.currentDotDuration--;
-                    if (hero.currentDotDuration == 0) {
-                        hero.currentDotDamage = 0;
+                if (hero.getCurrentDotDamage() != 0 || hero.getCurrentDotDuration() != 0) {
+                    // give damage over time damage and decrease duration
+                    hero.setCurrentHp(hero.getCurrentHp() - hero.getCurrentDotDamage());
+                    hero.setCurrentDotDuration(hero.getCurrentDotDuration() - 1);
+                    if (hero.getCurrentDotDuration() == 0) {
+                        hero.setCurrentDotDamage(0);
                     }
                 }
             }
-
-            for (int i = 0; i < allPlayers.size() - 1; i++) {
-                for (int j = i + 1; j < allPlayers.size(); j++) {
-                    if (allPlayers.get(i).getCoordinates().equals(allPlayers.get(j).getCoordinates())) {
-                        if (allPlayers.get(i).getCurrentHp() > 0 && allPlayers.get(j).getCurrentHp() > 0) {
-                            if (allPlayers.get(i).type.equals(PlayerType.Wizard)) {
-                                allPlayers.get(i).takeDamage(allPlayers.get(j));
-                                allPlayers.get(j).takeDamage(allPlayers.get(i));
-                            } else {
-                                allPlayers.get(j).takeDamage(allPlayers.get(i));
-                                allPlayers.get(i).takeDamage(allPlayers.get(j));
-                            }
-                            checkExpAndLevelUp(allPlayers.get(i), allPlayers.get(j));
-                        }
-                    }
-                }
-                if (allPlayers.get(i).currentDotDuration == 0) {
-                    allPlayers.get(i).stunned = false;
-                }
-            }
+            computeFights();
         }
         printScoreboard(out);
     }
 
-    void checkExpAndLevelUp(Player p1, Player p2) {
-        if (p1.getCurrentHp() <= 0) {
-            p2.setXp(p2.getXp() + Math.max(0, 200 - (p2.getLevel() - p1.getLevel()) * 40));
-        }
-        if (p2.getCurrentHp() <= 0) {
-            p1.setXp(p1.getXp() + Math.max(0, 200 - (p1.getLevel() - p2.getLevel()) * 40));
-        }
-        if (p1.getCurrentHp() > 0) {
-            while (p1.getXp() >= 250 + p1.getLevel() * 50) {
-                p1.setLevel(p1.getLevel() + 1);
-                p1.setMaxHp(p1.getMaxHp() + p1.hpScalePerLevel);
-                p1.setCurrentHp(p1.getMaxHp());
+    void computeFights() {
+        for (int i = 0; i < allPlayers.size() - 1; i++) {
+            for (int j = i + 1; j < allPlayers.size(); j++) {
+                // check if 2 players are on the same Mapcell
+                if (allPlayers.get(i).getPosition().equals(allPlayers.get(j).getPosition())) {
+                    if (allPlayers.get(i).isAlive() && allPlayers.get(j).isAlive()) {
+                        // Wizard attacks last so I can compute damage for Deflect
+                        if (allPlayers.get(i).getType().equals(PlayerType.Wizard)) {
+                            allPlayers.get(i).takeDamage(allPlayers.get(j));
+                            allPlayers.get(j).takeDamage(allPlayers.get(i));
+                        } else {
+                            allPlayers.get(j).takeDamage(allPlayers.get(i));
+                            allPlayers.get(i).takeDamage(allPlayers.get(j));
+                        }
+                        // after the fight update xp and level
+                        checkExpAndLevelUp(allPlayers.get(i), allPlayers.get(j));
+                    }
+                }
             }
+            if (allPlayers.get(i).getCurrentDotDuration() == 0) {
+                allPlayers.get(i).setStunned(false);
+            }
+        }
+    }
+
+    void checkExpAndLevelUp(final Player p1, final Player p2) {
+        if (!p1.isAlive()) {
+            p2.setXp(p2.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
+                    - (p2.getLevel() - p1.getLevel()) * Constants.LVL_DIF_MULTIP));
+        }
+        if (!p2.isAlive()) {
+            p1.setXp(p1.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
+                    - (p1.getLevel() - p2.getLevel()) * Constants.LVL_DIF_MULTIP));
+        }
+        if (p1.isAlive()) {
+            p1.levelUp();
         }
 
-        if (p2.getCurrentHp() > 0) {
-            while (p2.getXp() >= 250 + p2.getLevel() * 50) {
-                p2.setLevel(p2.getLevel() + 1);
-                p2.setMaxHp(p2.getMaxHp() + p2.hpScalePerLevel);
-                p2.setCurrentHp(p2.getMaxHp());
-            }
+        if (p2.isAlive()) {
+            p2.levelUp();
         }
 
     }
 
-    void moveHeroes(String moves) {
+    void moveHeroes(final String moves) {
         for (int i = 0; i < allPlayers.size(); i++) {
             allPlayers.get(i).move(moves.charAt(i));
         }
     }
 
-    void printScoreboard(String out) {
+    void printScoreboard(final String out) {
         try {
             FileWriter fout = new FileWriter(out);
             BufferedWriter buffer = new BufferedWriter(fout);

@@ -1,36 +1,40 @@
 package heroes.abilities;
 
 import heroes.Player;
+import heroes.PlayerType;
+
+import java.util.Map;
 
 public final class Ignite extends Ability {
 
-    float baseDotDmg;
-    float dotLvlScale;
-    int dotDuration;
+    private float baseDotDmg;
+    private float dotLvlScale;
+    private int dotDuration;
 
-    Ignite(final float baseDmg, final float lvlScale, final float rogueDmg, final float knightDmg, final float pyroDmg, final float wizardDmg, final float baseDot, final float dotLvlScale, final int dotDuration) {
-        super(baseDmg, lvlScale, rogueDmg, knightDmg, pyroDmg, wizardDmg);
+    Ignite(final float baseDmg, final float lvlScale, final Map<PlayerType, Float> raceModif,
+           final float baseDot, final float dotLvlScale, final int dotDuration) {
+        super(baseDmg, lvlScale, raceModif);
         type = AbilityType.Ignite;
         baseDotDmg = baseDot;
         this.dotLvlScale = dotLvlScale;
         this.dotDuration = dotDuration;
     }
 
-    public int computeBaseDamage(int level, float landModifier) {
+    public int computeBaseDamage(final int level, final float landModifier) {
         float dmg = baseDamage + level * dmgScalePerLevel;
         dmg += dmg * landModifier;
         return Math.round(dmg);
     }
 
-    public int addRaceModif(Player player, int dmg) {
-        return Math.round(dmg + dmg * modifierByRace.get(player.type));
+    public int addRaceModif(final Player player, final int dmg) {
+        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 
-    public void computeDot(Player player, int level, float landModifier) {
+    public void computeDot(final Player player, final int level, final float landModifier) {
         float dot = baseDotDmg + level * dotLvlScale;
         dot += dot * landModifier;
-        player.currentDotDamage = Math.round(dot + dot * modifierByRace.get(player.type));
-        player.currentDotDuration = dotDuration;
-        player.stunned = false;
+        player.setCurrentDotDamage(Math.round(dot + dot * modifierByRace.get(player.getType())));
+        player.setCurrentDotDuration(dotDuration);
+        player.setStunned(false);
     }
 }

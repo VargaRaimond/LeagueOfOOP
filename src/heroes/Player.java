@@ -1,73 +1,114 @@
 package heroes;
 
+import common.Constants;
 import map.LandType;
 import map.Map;
 import map.MapCell;
 
-import java.awt.*;
+import java.awt.Point;
 
 public abstract class Player {
-    public PlayerType type;
-    Point coordinates;
+    protected PlayerType type;
+    protected Point coordinates;
     private int maxHp;
     private int currentHp;
     protected int xp;
-    public int hpScalePerLevel;
+    protected int hpScalePerLevel;
     protected int level;
     protected LandType landWithBonus;
     protected MapCell currentLand;
-    public int currentDotDuration;
-    public int currentDotDamage;
-    public boolean stunned;
+    protected int currentDotDuration;
+    protected int currentDotDamage;
+    protected boolean stunned;
 
-    Player(Point coordinates) {
+    Player(final Point coordinates, final int baseHp, final int hpScale) {
         this.coordinates = coordinates;
-        level = 0;
-        xp = 0;
+        maxHp = baseHp;
+        currentHp = baseHp;
+        hpScalePerLevel = hpScale;
         currentLand = Map.getInstance().getCellAt(coordinates);
-        currentDotDuration = 0;
-        currentDotDamage = 0;
-        stunned = false;
     }
 
-    public int getMaxHp() {
+    public final boolean isAlive() {
+        return currentHp > 0;
+    }
+
+    public final void levelUp() {
+        while (xp >= Constants.MIN_XP + level * Constants.XP_LVL_MULTIP) {
+            level++;
+            maxHp += hpScalePerLevel;
+            currentHp = maxHp;
+        }
+    }
+
+    public final float getLandBonus() {
+        if (currentLand.getType() == landWithBonus) {
+            return currentLand.getLandModifier();
+        } else {
+            return 0f;
+        }
+    }
+
+    public final int getMaxHp() {
         return maxHp;
     }
 
-    public void setMaxHp(int maxHp) {
-        this.maxHp = maxHp;
-    }
-
-    public int getXp() {
+    public final int getXp() {
         return xp;
     }
 
-    public void setXp(int xp) {
+    public final void setXp(final int xp) {
         this.xp = xp;
     }
 
-    public int getLevel() {
+    public final int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public final void setLevel(final int level) {
         this.level = level;
     }
 
-    public int getCurrentHp() {
+    public final int getCurrentHp() {
         return currentHp;
     }
 
-    public void setCurrentHp(int currentHp) {
+    public final int getCurrentDotDuration() {
+        return currentDotDuration;
+    }
+
+    public final void setCurrentDotDuration(final int currentDotDuration) {
+        this.currentDotDuration = currentDotDuration;
+    }
+
+    public final int getCurrentDotDamage() {
+        return currentDotDamage;
+    }
+
+    public final void setCurrentDotDamage(final int currentDotDamage) {
+        this.currentDotDamage = currentDotDamage;
+    }
+
+    public final void setStunned(final boolean stunned) {
+        this.stunned = stunned;
+    }
+
+    public final PlayerType getType() {
+        return type;
+    }
+
+    public final void setCurrentHp(final int currentHp) {
         this.currentHp = currentHp;
     }
 
-    public Point getCoordinates() {
+    public final Point getPosition() {
         return coordinates;
     }
 
-    public void move(Character direction) {
-        if(stunned || getCurrentHp() <= 0) return;
+    public final void move(final Character direction) {
+        if (stunned || getCurrentHp() <= 0) {
+            return;
+        }
         switch (direction) {
             case('U') :
                 coordinates.x--;

@@ -6,100 +6,86 @@ import heroes.abilities.Backstab;
 import heroes.abilities.Paralysis;
 import map.LandType;
 
-import java.awt.*;
+import java.awt.Point;
 
 public final class Rogue extends Player {
 
-    Backstab backstab;
-    Paralysis paralysis;
+    private Backstab backstab;
+    private Paralysis paralysis;
 
-    public Rogue(Point coordinates, int baseHp, int lvlScale) {
-        super(coordinates);
+    public Rogue(final Point coordinates, final int baseHp, final int lvlScale) {
+        super(coordinates, baseHp, lvlScale);
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
-        backstab = (Backstab)abilityFactory.getAbility(AbilityType.Backstab);
-        paralysis = (Paralysis)abilityFactory.getAbility(AbilityType.Paralysis);
+        backstab = (Backstab) abilityFactory.getAbility(AbilityType.Backstab);
+        paralysis = (Paralysis) abilityFactory.getAbility(AbilityType.Paralysis);
 
-        setCurrentHp(baseHp);
-        setMaxHp(baseHp);
-        hpScalePerLevel = lvlScale;
         type = PlayerType.Rogue;
         landWithBonus = LandType.Woods;
     }
 
     @Override
-    public void takeDamage(Player other) {
+    public void takeDamage(final Player other) {
         other.dealDamage(this);
     }
 
     @Override
-    public void dealDamage(Knight knight) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Knight knight) {
+        int stabDmg, paralysisDmg;
 
-        if (currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = backstab.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = paralysis.computeDot(knight, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = backstab.computeBaseDamage(level, 0f);
-            baseDmg2 = paralysis.computeDot(knight, level, 0f);
-        }
-        int dmg = backstab.addRaceModif(knight, baseDmg1) + paralysis.addRaceModif(knight, baseDmg2);
-        knight.setCurrentHp(knight.getCurrentHp() - dmg);
+
+        stabDmg = backstab.computeBaseDamage(level, getLandBonus());
+        paralysisDmg = paralysis.computeDot(knight, level, getLandBonus());
+
+        int finalDmg = backstab.addRaceModif(knight, stabDmg);
+        finalDmg += paralysis.addRaceModif(knight, paralysisDmg);
+        knight.setCurrentHp(knight.getCurrentHp() - finalDmg);
     }
 
     @Override
-    public void dealDamage(Rogue rogue) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Rogue rogue) {
+        int stabDmg, paralysisDmg;
 
-        if (currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = backstab.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = paralysis.computeDot(rogue, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = backstab.computeBaseDamage(level, 0f);
-            baseDmg2 = paralysis.computeDot(rogue, level, 0f);
-        }
-        int dmg = backstab.addRaceModif(rogue, baseDmg1) + paralysis.addRaceModif(rogue, baseDmg2);
-        rogue.setCurrentHp(rogue.getCurrentHp() - dmg);
+        stabDmg = backstab.computeBaseDamage(level, getLandBonus());
+        paralysisDmg = paralysis.computeDot(rogue, level, getLandBonus());
+
+        int finalDmg = backstab.addRaceModif(rogue, stabDmg);
+        finalDmg += paralysis.addRaceModif(rogue, paralysisDmg);
+        rogue.setCurrentHp(rogue.getCurrentHp() - finalDmg);
     }
 
     @Override
-    public void dealDamage(Wizard wizard) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Wizard wizard) {
+        int stabDmg, paralysisDmg;
 
-        if (currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = backstab.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = paralysis.computeDot(wizard, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = backstab.computeBaseDamage(level, 0f);
-            baseDmg2 = paralysis.computeDot(wizard, level, 0f);
-        }
-        wizard.dmgForDeflect = baseDmg1 + baseDmg2;
-        int dmg = backstab.addRaceModif(wizard, baseDmg1) + paralysis.addRaceModif(wizard, baseDmg2);
-        wizard.setCurrentHp(wizard.getCurrentHp() - dmg);
+        stabDmg = backstab.computeBaseDamage(level, getLandBonus());
+        paralysisDmg = paralysis.computeDot(wizard, level, getLandBonus());
+
+        wizard.updateDmgForDeflect(stabDmg + paralysisDmg);
+        int finalDmg = backstab.addRaceModif(wizard, stabDmg);
+        finalDmg += paralysis.addRaceModif(wizard, paralysisDmg);
+        wizard.setCurrentHp(wizard.getCurrentHp() - finalDmg);
     }
 
     @Override
-    public void dealDamage(Pyromancer pyromancer) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Pyromancer pyromancer) {
+        int stabDmg, paralysisDmg;
 
-        if (currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = backstab.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = paralysis.computeDot(pyromancer, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = backstab.computeBaseDamage(level, 0f);
-            baseDmg2 = paralysis.computeDot(pyromancer, level, 0f);
-        }
-        int dmg = backstab.addRaceModif(pyromancer, baseDmg1) + paralysis.addRaceModif(pyromancer, baseDmg2);
-        pyromancer.setCurrentHp(pyromancer.getCurrentHp() - dmg);
+        stabDmg = backstab.computeBaseDamage(level, getLandBonus());
+        paralysisDmg = paralysis.computeDot(pyromancer, level, getLandBonus());
+
+        int finalDmg = backstab.addRaceModif(pyromancer, stabDmg);
+        finalDmg += paralysis.addRaceModif(pyromancer, paralysisDmg);
+        pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
     }
 
     @Override
     public String toString() {
-        if (getCurrentHp() <= 0) {
+        if (!isAlive()) {
             return "R dead";
         } else {
-            return "R " + level + " " + xp + " " + getCurrentHp() +
-                    " " + coordinates.x + " " + coordinates.y;
+            return "R " + level + " " + xp + " " + getCurrentHp()
+                    + " " + coordinates.x + " " + coordinates.y;
         }
     }
 }

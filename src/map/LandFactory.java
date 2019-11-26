@@ -4,7 +4,7 @@ public final class LandFactory {
     private static LandFactory instance;
 
     public static LandFactory getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LandFactory();
         }
         return instance;

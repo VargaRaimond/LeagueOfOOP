@@ -1,35 +1,39 @@
 package heroes.abilities;
 
 import heroes.Player;
+import heroes.PlayerType;
+
+import java.util.Map;
 
 public final class Paralysis extends Ability {
 
-    float baseDotDmg;
-    float dotLvlScale;
-    int dotDuration;
+    private float baseDotDmg;
+    private float dotLvlScale;
+    private int dotDuration;
 
-    Paralysis(final float rogueDmg, final float knightDmg, final float pyroDmg, final float wizardDmg, final float baseDot, final float dotLvlScale, final int dotDuration) {
-        super(0, 0, rogueDmg, knightDmg, pyroDmg, wizardDmg);
+    Paralysis(final Map<PlayerType, Float> raceModifiers, final float baseDot,
+              final float dotLvlScale, final int dotDuration) {
+        super(0, 0, raceModifiers);
         type = AbilityType.Paralysis;
         baseDotDmg = baseDot;
         this.dotLvlScale = dotLvlScale;
         this.dotDuration = dotDuration;
     }
 
-    public int computeDot(Player player, int level, float landModifier) {
+    public int computeDot(final Player player, final int level, final float landModifier) {
         float dot = baseDotDmg + level * dotLvlScale;
         dot += dot * landModifier;
-        player.currentDotDamage = Math.round(dot + dot * modifierByRace.get(player.type));
-        if(landModifier != 0f) {
-            player.currentDotDuration = 2 * dotDuration;
+        player.setCurrentDotDamage(Math.round(dot + dot * modifierByRace.get(player.getType())));
+        if (landModifier != 0f) {
+            player.setCurrentDotDuration(2 * dotDuration);
         } else {
-            player.currentDotDuration = dotDuration;
+            player.setCurrentDotDuration(dotDuration);
         }
-        player.stunned = true;
+        player.setStunned(true);
         return Math.round(dot);
     }
 
-    public int addRaceModif(Player player, int dmg) {
-        return Math.round(dmg + dmg * modifierByRace.get(player.type));
+    public int addRaceModif(final Player player, final int dmg) {
+        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 }

@@ -6,110 +6,89 @@ import heroes.abilities.Fireblast;
 import heroes.abilities.Ignite;
 import map.LandType;
 
-import java.awt.*;
+import java.awt.Point;
 
 public final class Pyromancer extends Player {
 
-    Fireblast fireblast;
-    Ignite ignite;
+    private Fireblast fireblast;
+    private Ignite ignite;
 
-    public Pyromancer(Point coordinates, int baseHp, int hpScale) {
-        super(coordinates);
+    public Pyromancer(final Point coordinates, final int baseHp, final int hpScale) {
+        super(coordinates, baseHp, hpScale);
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
-        fireblast = (Fireblast)abilityFactory.getAbility(AbilityType.Fireblast);
+        fireblast = (Fireblast) abilityFactory.getAbility(AbilityType.Fireblast);
         ignite = (Ignite) abilityFactory.getAbility(AbilityType.Ignite);
 
         type = PlayerType.Pyromancer;
-        setCurrentHp(baseHp);
-        setMaxHp(baseHp);
-        hpScalePerLevel = hpScale;
         landWithBonus = LandType.Volcanic;
     }
 
     @Override
-    public void takeDamage(Player other) {
+    public void takeDamage(final Player other) {
         other.dealDamage(this);
     }
 
     @Override
-    public void dealDamage(Knight knight) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Knight knight) {
+        int blastDmg, igniteDmg;
 
-        if(currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = fireblast.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = ignite.computeBaseDamage(level, currentLand.landModifier);
-            ignite.computeDot(knight, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = fireblast.computeBaseDamage(level, 0f);
-            baseDmg2 = ignite.computeBaseDamage(level, 0f);
-            ignite.computeDot(knight, level, 0f);
-        }
+        blastDmg = fireblast.computeBaseDamage(level, getLandBonus());
+        igniteDmg = ignite.computeBaseDamage(level, getLandBonus());
+        ignite.computeDot(knight, level, getLandBonus());
 
-        int dmg = fireblast.addRaceModif(knight, baseDmg1) + ignite.addRaceModif(knight, baseDmg2);
-        knight.setCurrentHp(knight.getCurrentHp() - dmg);
+        int finalDmg = fireblast.addRaceModif(knight, blastDmg);
+        finalDmg += ignite.addRaceModif(knight, igniteDmg);
+        knight.setCurrentHp(knight.getCurrentHp() - finalDmg);
     }
 
     @Override
-    public void dealDamage(Rogue rogue) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Rogue rogue) {
+        int blastDmg, igniteDmg;
 
-        if(currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = fireblast.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = ignite.computeBaseDamage(level, currentLand.landModifier);
-            ignite.computeDot(rogue, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = fireblast.computeBaseDamage(level, 0f);
-            baseDmg2 = ignite.computeBaseDamage(level, 0f);
-            ignite.computeDot(rogue, level, 0f);
-        }
-        int dmg = fireblast.addRaceModif(rogue, baseDmg1) + ignite.addRaceModif(rogue, baseDmg2);
-        rogue.setCurrentHp(rogue.getCurrentHp() - dmg);
+        blastDmg = fireblast.computeBaseDamage(level, getLandBonus());
+        igniteDmg = ignite.computeBaseDamage(level, getLandBonus());
+        ignite.computeDot(rogue, level, getLandBonus());
+
+        int finalDmg = fireblast.addRaceModif(rogue, blastDmg);
+        finalDmg += ignite.addRaceModif(rogue, igniteDmg);
+        rogue.setCurrentHp(rogue.getCurrentHp() - finalDmg);
     }
 
     @Override
-    public void dealDamage(Wizard wizard) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Wizard wizard) {
+        int blastDmg, igniteDmg;
 
-        if(currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = fireblast.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = ignite.computeBaseDamage(level, currentLand.landModifier);
-            ignite.computeDot(wizard, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = fireblast.computeBaseDamage(level, 0f);
-            baseDmg2 = ignite.computeBaseDamage(level, 0f);
-            ignite.computeDot(wizard, level, 0f);
-        }
-        wizard.dmgForDeflect = baseDmg1 + baseDmg2;
-        int dmg = fireblast.addRaceModif(wizard, baseDmg1) + ignite.addRaceModif(wizard, baseDmg2);
-        wizard.setCurrentHp(wizard.getCurrentHp() - dmg);
+        blastDmg = fireblast.computeBaseDamage(level, getLandBonus());
+        igniteDmg = ignite.computeBaseDamage(level, getLandBonus());
+        ignite.computeDot(wizard, level, getLandBonus());
+
+        wizard.updateDmgForDeflect(blastDmg + igniteDmg);
+        int finalDmg = fireblast.addRaceModif(wizard, blastDmg);
+        finalDmg += ignite.addRaceModif(wizard, igniteDmg);
+        wizard.setCurrentHp(wizard.getCurrentHp() - finalDmg);
     }
 
     @Override
-    public void dealDamage(Pyromancer pyromancer) {
-        int baseDmg1, baseDmg2;
+    public void dealDamage(final Pyromancer pyromancer) {
+        int blastDmg, igniteDmg;
 
-        if(currentLand.type.equals(landWithBonus)) {
-            baseDmg1 = fireblast.computeBaseDamage(level, currentLand.landModifier);
-            baseDmg2 = ignite.computeBaseDamage(level, currentLand.landModifier);
-            ignite.computeDot(pyromancer, level, currentLand.landModifier);
-        } else {
-            baseDmg1 = fireblast.computeBaseDamage(level, 0f);
-            baseDmg2 = ignite.computeBaseDamage(level, 0f);
-            ignite.computeDot(pyromancer, level, 0f);
-        }
+        blastDmg = fireblast.computeBaseDamage(level, getLandBonus());
+        igniteDmg = ignite.computeBaseDamage(level, getLandBonus());
+        ignite.computeDot(pyromancer, level, getLandBonus());
 
-        int dmg = fireblast.addRaceModif(pyromancer, baseDmg1) + ignite.addRaceModif(pyromancer, baseDmg2);
-        pyromancer.setCurrentHp(pyromancer.getCurrentHp() - dmg);
+        int finalDmg = fireblast.addRaceModif(pyromancer, blastDmg);
+        finalDmg += ignite.addRaceModif(pyromancer, igniteDmg);
+        pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
     }
 
     @Override
     public String toString() {
-        if(getCurrentHp() <= 0) {
+        if (!isAlive()) {
             return "P dead";
         } else {
-            return "P " + level + " " + xp + " " + getCurrentHp() +
-                    " " + coordinates.x + " " + coordinates.y;
+            return "P " + level + " " + xp + " " + getCurrentHp()
+                    + " " + coordinates.x + " " + coordinates.y;
         }
     }
 }
