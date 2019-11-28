@@ -32,8 +32,4 @@ public final class Paralysis extends Ability {
         player.setStunned(true);
         return Math.round(dot);
     }
-
-    public int addRaceModif(final Player player, final int dmg) {
-        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
-    }
 }

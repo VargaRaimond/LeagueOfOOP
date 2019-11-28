@@ -1,7 +1,7 @@
 package heroes.abilities;
 
-import heroes.Player;
 import heroes.PlayerType;
+import heroes.Player;
 
 import java.util.Map;
 
@@ -18,16 +18,6 @@ public final class Ignite extends Ability {
         baseDotDmg = baseDot;
         this.dotLvlScale = dotLvlScale;
         this.dotDuration = dotDuration;
-    }
-
-    public int computeBaseDamage(final int level, final float landModifier) {
-        float dmg = baseDamage + level * dmgScalePerLevel;
-        dmg += dmg * landModifier;
-        return Math.round(dmg);
-    }
-
-    public int addRaceModif(final Player player, final int dmg) {
-        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 
     public void computeDot(final Player player, final int level, final float landModifier) {

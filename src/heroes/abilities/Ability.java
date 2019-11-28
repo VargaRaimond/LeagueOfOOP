@@ -1,5 +1,6 @@
 package heroes.abilities;
 
+import heroes.Player;
 import heroes.PlayerType;
 
 import java.util.HashMap;
@@ -17,6 +18,23 @@ public abstract class Ability {
         baseDamage = baseDmg;
         dmgScalePerLevel = lvlScale;
         modifierByRace.putAll(raceModifiers);
+    }
+
+    /**
+     * Calculates base damage dealt by an ability.
+     * @param level the level of the player casting the ability
+     * @param landModifier the bonus damage given by the land type
+     * @return the damage dealt by the ability after level scale and
+     * land modifier
+     */
+    public int computeBaseDamage(final int level, final float landModifier) {
+        float dmg = baseDamage + level * dmgScalePerLevel;
+        dmg += dmg * landModifier;
+        return Math.round(dmg);
+    }
+
+    public final int addRaceModif(final Player player, final int dmg) {
+        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 
 }

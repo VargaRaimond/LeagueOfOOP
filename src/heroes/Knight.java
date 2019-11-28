@@ -36,7 +36,7 @@ public final class Knight extends Player {
         executeDmg = execute.computeBaseDamage(knight, level, getLandBonus());
         slamDmg = slam.computeBaseDamage(level, getLandBonus());
 
-        if (!execute.checkIntantKill(knight, level)) {
+        if (!execute.checkInstantKill(knight, level)) {
             executeDmg = execute.addRaceModif(knight, executeDmg);
         }
         slam.updateStun(knight);
@@ -51,7 +51,7 @@ public final class Knight extends Player {
         executeDmg = execute.computeBaseDamage(rogue, level, getLandBonus());
         slamDmg = slam.computeBaseDamage(level, getLandBonus());
 
-        if (!execute.checkIntantKill(rogue, level)) {
+        if (!execute.checkInstantKill(rogue, level)) {
             executeDmg = execute.addRaceModif(rogue, executeDmg);
         }
         slam.updateStun(rogue);
@@ -67,7 +67,7 @@ public final class Knight extends Player {
         slamDmg = slam.computeBaseDamage(level, getLandBonus());
 
         wizard.updateDmgForDeflect(executeDmg + slamDmg);
-        if (!execute.checkIntantKill(wizard, level)) {
+        if (!execute.checkInstantKill(wizard, level)) {
             executeDmg = execute.addRaceModif(wizard, executeDmg);
         }
         slam.updateStun(wizard);
@@ -82,7 +82,7 @@ public final class Knight extends Player {
         executeDmg = execute.computeBaseDamage(pyromancer, level, getLandBonus());
         slamDmg = slam.computeBaseDamage(level, getLandBonus());
 
-        if (!execute.checkIntantKill(pyromancer, level)) {
+        if (!execute.checkInstantKill(pyromancer, level)) {
             executeDmg = execute.addRaceModif(pyromancer, executeDmg);
         }
         slam.updateStun(pyromancer);

@@ -15,16 +15,6 @@ public final class Slam extends Ability {
         this.stunDuration = stunDuration;
     }
 
-    public int computeBaseDamage(final int level, final float landModifier) {
-        float dmg = baseDamage + level * dmgScalePerLevel;
-        dmg += dmg * landModifier;
-        return Math.round(dmg);
-    }
-
-    public int addRaceModif(final Player player, final int dmg) {
-        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
-    }
-
     public void updateStun(final Player player) {
         player.setCurrentDotDuration(stunDuration);
         player.setStunned(true);

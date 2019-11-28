@@ -22,17 +22,11 @@ public final class Execute extends Ability {
                 * (executePercent + Constants.EXECUTE_SCALE * level)) {
             return player.getCurrentHp();
         }
-        float dmg = baseDamage + level * dmgScalePerLevel;
-        dmg += dmg * landModifier;
-        return Math.round(dmg);
+        return super.computeBaseDamage(level, landModifier);
     }
 
-    public boolean checkIntantKill(final Player player, final int level) {
+    public boolean checkInstantKill(final Player player, final int level) {
         return player.getCurrentHp() <= player.getMaxHp()
                 * (executePercent + Constants.EXECUTE_SCALE * level);
-    }
-
-    public int addRaceModif(final Player player, final int dmg) {
-        return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 }
