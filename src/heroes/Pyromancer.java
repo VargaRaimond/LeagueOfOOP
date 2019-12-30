@@ -1,5 +1,6 @@
 package heroes;
 
+import common.HeroVisitor;
 import heroes.abilities.AbilityFactory;
 import heroes.abilities.AbilityType;
 import heroes.abilities.Fireblast;
@@ -80,6 +81,16 @@ public final class Pyromancer extends Player {
         int finalDmg = fireblast.addRaceModif(pyromancer, blastDmg);
         finalDmg += ignite.addRaceModif(pyromancer, igniteDmg);
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
+    }
+
+    public void accept(HeroVisitor angel) {
+        angel.visit(this);
+    }
+
+    @Override
+    public void updateAbilities(float changer) {
+        fireblast.updateModifiers(changer);
+        ignite.updateModifiers(changer);
     }
 
     @Override

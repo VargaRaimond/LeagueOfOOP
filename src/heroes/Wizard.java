@@ -1,5 +1,6 @@
 package heroes;
 
+import common.HeroVisitor;
 import heroes.abilities.Drain;
 import heroes.abilities.Deflect;
 import heroes.abilities.AbilityFactory;
@@ -71,6 +72,16 @@ public final class Wizard extends Player {
         deflectDmg = deflect.computeBaseDamage(pyromancer, level, getLandBonus(), dmgForDeflect);
 
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - drainDmg - deflectDmg);
+    }
+
+    public void accept(HeroVisitor angel) {
+        angel.visit(this);
+    }
+
+    @Override
+    public void updateAbilities(float changer) {
+        drain.updateModifiers(changer);
+        deflect.updateModifiers(changer);
     }
 
     @Override

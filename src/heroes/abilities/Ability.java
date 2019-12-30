@@ -37,4 +37,10 @@ public abstract class Ability {
         return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 
+    public final void updateModifiers(final float changer) {
+        for(Map.Entry<PlayerType, Float> element : modifierByRace.entrySet()) {
+            element.setValue(element.getValue() + changer);
+        }
+    }
+
 }

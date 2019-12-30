@@ -1,5 +1,7 @@
 package main;
 
+import angels.Angel;
+import angels.AngelFactory;
 import heroes.Player;
 import heroes.PlayerFactory;
 import map.Map;
@@ -21,8 +23,9 @@ import java.util.Scanner;
 
             List<Player> playersOrder = new ArrayList<>();
             List<String> roundMoves = new ArrayList<>();
+             List<List<Angel>> angels = null;
 
-            try {
+             try {
                 File in = new File(mInputPath);
                 Scanner sc = new Scanner(in);
 
@@ -56,11 +59,33 @@ import java.util.Scanner;
                     // get a full row of moves
                     roundMoves.add(sc.next());
                 }
+
+                angels = new ArrayList<>();
+                AngelFactory angelFactory = AngelFactory.getInstance();
+                for(int i = 0; i < nrRounds; i++) {
+                    angels.add(new ArrayList<>());
+                    int nrAngels = sc.nextInt();
+
+                    for(int angelIt = 0; angelIt < nrAngels; angelIt++) {
+                        sc.useDelimiter(",");
+                        sc.skip(" ");
+                        String tempAngel = sc.next();
+                        int xAngel = sc.nextInt();
+                        // go back to space delimiter and jump over the last comma
+                        sc.reset();
+                        sc.skip(",");
+                        int yAngel = sc.nextInt();
+                        Point angelPosition = new Point(xAngel, yAngel);
+                        angels.get(i).add(angelFactory.createAngel(tempAngel, angelPosition));
+                    }
+                }
+
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
 
-            return new GameInput(playersOrder, roundMoves);
+
+            return new GameInput(playersOrder, roundMoves, angels);
         }
     }
 

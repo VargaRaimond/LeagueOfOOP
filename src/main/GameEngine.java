@@ -1,5 +1,6 @@
 package main;
 
+import angels.Angel;
 import common.Constants;
 import heroes.Player;
 import heroes.PlayerType;
@@ -11,10 +12,11 @@ import java.util.List;
 public final class GameEngine {
 
     private List<Player> allPlayers;
+    private List<List<Angel>> allAngels;
 
     public void computeRounds(final GameInput input, final String out) {
         allPlayers = input.getPlayers();
-
+        allAngels = input.getAngels();
         for (int roundNr = 0; roundNr < input.getRounds(); roundNr++) {
             moveHeroes(input.getMovesAt(roundNr));
 
@@ -29,6 +31,15 @@ public final class GameEngine {
                 }
             }
             computeFights();
+            if (!(allAngels.get(roundNr).isEmpty())) {
+                for (Angel angel : allAngels.get(roundNr)) {
+                    for (Player hero : allPlayers) {
+                        if (hero.getPosition().equals(angel.getPosition())) {
+                            hero.accept(angel);
+                        }
+                    }
+                }
+            }
         }
         printScoreboard(out);
     }

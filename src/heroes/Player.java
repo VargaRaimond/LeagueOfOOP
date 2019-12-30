@@ -1,13 +1,14 @@
 package heroes;
 
 import common.Constants;
+import common.HeroVisitable;
 import map.LandType;
 import map.Map;
 import map.MapCell;
 
 import java.awt.Point;
 
-public abstract class Player {
+public abstract class Player implements HeroVisitable {
     protected PlayerType type;
     protected Point coordinates;
     private int maxHp;
@@ -136,4 +137,7 @@ public abstract class Player {
     public abstract void dealDamage(Rogue rogue);
 
     public abstract void dealDamage(Pyromancer pyromancer);
+
+    public abstract void updateAbilities(final float changer);
+
 }

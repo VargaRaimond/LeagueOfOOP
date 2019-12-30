@@ -1,5 +1,6 @@
 package heroes;
 
+import common.HeroVisitor;
 import heroes.abilities.Execute;
 import heroes.abilities.Slam;
 import heroes.abilities.AbilityFactory;
@@ -88,6 +89,16 @@ public final class Knight extends Player {
         slam.updateStun(pyromancer);
         int finalDmg = executeDmg + slam.addRaceModif(pyromancer, slamDmg);
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
+    }
+
+    public void accept(HeroVisitor angel) {
+        angel.visit(this);
+    }
+
+    @Override
+    public void updateAbilities(float changer) {
+        execute.updateModifiers(changer);
+        slam.updateModifiers(changer);
     }
 
     @Override

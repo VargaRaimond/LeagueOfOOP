@@ -1,5 +1,6 @@
 package heroes;
 
+import common.HeroVisitor;
 import heroes.abilities.AbilityFactory;
 import heroes.abilities.AbilityType;
 import heroes.abilities.Backstab;
@@ -77,6 +78,16 @@ public final class Rogue extends Player {
         int finalDmg = backstab.addRaceModif(pyromancer, stabDmg);
         finalDmg += paralysis.addRaceModif(pyromancer, paralysisDmg);
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
+    }
+
+    public void accept(HeroVisitor angel) {
+        angel.visit(this);
+    }
+
+    @Override
+    public void updateAbilities(float changer) {
+        backstab.updateModifiers(changer);
+        paralysis.updateModifiers(changer);
     }
 
     @Override
