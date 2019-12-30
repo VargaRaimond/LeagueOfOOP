@@ -5,6 +5,7 @@ import heroes.abilities.Drain;
 import heroes.abilities.Deflect;
 import heroes.abilities.AbilityFactory;
 import heroes.abilities.AbilityType;
+import heroes.strategies.WizardStrategy;
 import map.LandType;
 
 import java.awt.Point;
@@ -15,8 +16,8 @@ public final class Wizard extends Player {
     private Deflect deflect;
     private float dmgForDeflect;
 
-    Wizard(final Point coordinates, final int baseHp, final int hpScale) {
-        super(coordinates, baseHp, hpScale);
+    Wizard(final Point coordinates, final int baseHp, final int hpScale, final int id) {
+        super(coordinates, baseHp, hpScale, id);
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         drain = (Drain) (abilityFactory.getAbility(AbilityType.Drain));
@@ -24,6 +25,8 @@ public final class Wizard extends Player {
 
         type = PlayerType.Wizard;
         landWithBonus = LandType.Desert;
+
+        strategy = new WizardStrategy();
     }
 
     public void updateDmgForDeflect(final int newDamage) {
@@ -40,7 +43,7 @@ public final class Wizard extends Player {
         // only Drain
         int drainDmg;
         drainDmg = drain.computeBaseDamage(wizard, level, getLandBonus());
-
+        System.out.println(drainDmg + " Atata poate");
         wizard.setCurrentHp(wizard.getCurrentHp() - drainDmg);
     }
 

@@ -26,16 +26,16 @@ public final class PlayerFactory {
         return instance;
     }
 
-    public Player createHero(final Character type, final Point position) {
+    public Player createHero(final Character type, final Point position, final int id) {
         switch (type) {
             case('W'):
-                return new Wizard(position, HeroSpecs.WIZARD_BASE_HP, HeroSpecs.WIZARD_HP_SCALE);
+                return new Wizard(position, HeroSpecs.WIZARD_BASE_HP, HeroSpecs.WIZARD_HP_SCALE, id);
             case('K'):
-                return new Knight(position, HeroSpecs.KNIGHT_BASE_HP, HeroSpecs.KNIGHT_HP_SCALE);
+                return new Knight(position, HeroSpecs.KNIGHT_BASE_HP, HeroSpecs.KNIGHT_HP_SCALE, id);
             case('P'):
-                return new Pyromancer(position, HeroSpecs.PYRO_BASE_HP, HeroSpecs.PYRO_HP_SCALE);
+                return new Pyromancer(position, HeroSpecs.PYRO_BASE_HP, HeroSpecs.PYRO_HP_SCALE, id);
             case('R'):
-                return new Rogue(position, HeroSpecs.ROGUE_BASE_HP, HeroSpecs.ROGUE_HP_SCALE);
+                return new Rogue(position, HeroSpecs.ROGUE_BASE_HP, HeroSpecs.ROGUE_HP_SCALE, id);
             default: return null;
         }
     }

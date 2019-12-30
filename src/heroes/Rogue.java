@@ -5,6 +5,7 @@ import heroes.abilities.AbilityFactory;
 import heroes.abilities.AbilityType;
 import heroes.abilities.Backstab;
 import heroes.abilities.Paralysis;
+import heroes.strategies.RogueStrategy;
 import map.LandType;
 
 import java.awt.Point;
@@ -14,8 +15,8 @@ public final class Rogue extends Player {
     private Backstab backstab;
     private Paralysis paralysis;
 
-    public Rogue(final Point coordinates, final int baseHp, final int lvlScale) {
-        super(coordinates, baseHp, lvlScale);
+    public Rogue(final Point coordinates, final int baseHp, final int lvlScale, final int id) {
+        super(coordinates, baseHp, lvlScale, id);
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         backstab = (Backstab) abilityFactory.getAbility(AbilityType.Backstab);
@@ -23,6 +24,8 @@ public final class Rogue extends Player {
 
         type = PlayerType.Rogue;
         landWithBonus = LandType.Woods;
+
+        strategy = new RogueStrategy();
     }
 
     @Override

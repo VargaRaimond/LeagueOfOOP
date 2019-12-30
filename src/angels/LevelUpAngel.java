@@ -20,31 +20,35 @@ public class LevelUpAngel extends Angel {
         public static final float WIZARD = 0.25f;
     }
 
+    public boolean isGood() {
+        return true;
+    }
+
     public void visit(Knight knight) {
         if(knight.isAlive()) {
             knight.setXp(Constants.MIN_XP + knight.getLevel() * Constants.XP_LVL_MULTIP);
-            knight.setLevel(knight.getLevel() + 1);
+            knight.levelUp();
             knight.updateAbilities(Modifiers.KNIGHT);
         }
     }
     public void visit(Pyromancer pyromancer) {
         if(pyromancer.isAlive()) {
             pyromancer.setXp(Constants.MIN_XP + pyromancer.getLevel() * Constants.XP_LVL_MULTIP);
-            pyromancer.setLevel(pyromancer.getLevel() + 1);
+            pyromancer.levelUp();
             pyromancer.updateAbilities(Modifiers.PYRO);
         }
     }
     public void visit(Wizard wizard) {
         if(wizard.isAlive()) {
             wizard.setXp(Constants.MIN_XP + wizard.getLevel() * Constants.XP_LVL_MULTIP);
-            wizard.setLevel(wizard.getLevel() + 1);
+            wizard.levelUp();
             wizard.updateAbilities(Modifiers.WIZARD);
         }
     }
     public void visit(Rogue rogue) {
         if(rogue.isAlive()) {
             rogue.setXp(Constants.MIN_XP + rogue.getLevel() * Constants.XP_LVL_MULTIP);
-            rogue.setLevel(rogue.getLevel() + 1);
+            rogue.levelUp();
             rogue.updateAbilities(Modifiers.ROGUE);
         }
     }

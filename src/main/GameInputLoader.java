@@ -51,7 +51,7 @@ import java.util.Scanner;
                 for (int i = 0; i < nrPlayers; i++) {
                     Character type = sc.next().charAt(0);
                     Point coordinates = new Point(sc.nextInt(), sc.nextInt());
-                    playersOrder.add(playerFactory.createHero(type, coordinates));
+                    playersOrder.add(playerFactory.createHero(type, coordinates, i));
                 }
                 int nrRounds = sc.nextInt();
 

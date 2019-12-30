@@ -13,6 +13,10 @@ public class TheDoomer extends Angel {
         super(type, coordinates);
     }
 
+    public boolean isGood() {
+        return false;
+    }
+
     public void visit(Knight knight) {
         knight.setCurrentHp(Constants.DEAD_PLAYER);
     }

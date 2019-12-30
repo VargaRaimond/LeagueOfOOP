@@ -5,6 +5,7 @@ import heroes.abilities.Execute;
 import heroes.abilities.Slam;
 import heroes.abilities.AbilityFactory;
 import heroes.abilities.AbilityType;
+import heroes.strategies.KnightStrategy;
 import map.LandType;
 
 import java.awt.Point;
@@ -14,8 +15,8 @@ public final class Knight extends Player {
     private Execute execute;
     private Slam slam;
 
-    public Knight(final Point coordinates, final int baseHp, final int hpScale) {
-        super(coordinates, baseHp, hpScale);
+    public Knight(final Point coordinates, final int baseHp, final int hpScale, final int id) {
+        super(coordinates, baseHp, hpScale, id);
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         execute = (Execute) abilityFactory.getAbility(AbilityType.Execute);
@@ -23,6 +24,8 @@ public final class Knight extends Player {
 
         type = PlayerType.Knight;
         landWithBonus = LandType.Land;
+
+        strategy = new KnightStrategy();
     }
 
     @Override

@@ -1,9 +1,11 @@
 package main;
 
 import angels.Angel;
+import angels.AngelType;
 import common.Constants;
 import heroes.Player;
 import heroes.PlayerType;
+import wizard.GreatWizard;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -13,35 +15,70 @@ public final class GameEngine {
 
     private List<Player> allPlayers;
     private List<List<Angel>> allAngels;
+    private FileWriter fout;
+    private BufferedWriter buffer;
 
-    public void computeRounds(final GameInput input, final String out) {
-        allPlayers = input.getPlayers();
-        allAngels = input.getAngels();
-        for (int roundNr = 0; roundNr < input.getRounds(); roundNr++) {
-            moveHeroes(input.getMovesAt(roundNr));
+    public GameEngine(final String out) {
+        try {
+            fout = new FileWriter(out);
+            buffer = new BufferedWriter(fout);
+            GreatWizard.getInstance(buffer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-            for (Player hero : allPlayers) {
-                if (hero.getCurrentDotDamage() != 0 || hero.getCurrentDotDuration() != 0) {
-                    // give damage over time damage and decrease duration
-                    hero.setCurrentHp(hero.getCurrentHp() - hero.getCurrentDotDamage());
-                    hero.setCurrentDotDuration(hero.getCurrentDotDuration() - 1);
-                    if (hero.getCurrentDotDuration() == 0) {
-                        hero.setCurrentDotDamage(0);
-                    }
-                }
-            }
-            computeFights();
-            if (!(allAngels.get(roundNr).isEmpty())) {
-                for (Angel angel : allAngels.get(roundNr)) {
-                    for (Player hero : allPlayers) {
-                        if (hero.getPosition().equals(angel.getPosition())) {
-                            hero.accept(angel);
+    public void computeRounds(final GameInput input) {
+        try {
+            allPlayers = input.getPlayers();
+            allAngels = input.getAngels();
+            for (int roundNr = 0; roundNr < input.getRounds(); roundNr++) {
+
+                System.out.println("~~ Round " + (roundNr + 1) + " ~~");
+                buffer.write("~~ Round " + (roundNr + 1) + " ~~");
+                buffer.newLine();
+
+                moveHeroes(input.getMovesAt(roundNr));
+
+                for (Player hero : allPlayers) {
+                    if (hero.getCurrentDotDamage() != 0 || hero.getCurrentDotDuration() != 0) {
+                        // give damage over time damage and decrease duration
+                        hero.setCurrentHp(hero.getCurrentHp() - hero.getCurrentDotDamage());
+                        hero.setCurrentDotDuration(hero.getCurrentDotDuration() - 1);
+                        if (hero.getCurrentDotDuration() == 0) {
+                            hero.setCurrentDotDamage(0);
                         }
                     }
                 }
+                computeFights();
+
+                // add angels for current round and apply their bonuses
+                if (!(allAngels.get(roundNr).isEmpty())) {
+                    for (Angel angel : allAngels.get(roundNr)) {
+                        angel.notifyObserver();
+                        for (Player hero : allPlayers) {
+                            if (hero.getPosition().equals(angel.getPosition())) {
+                                if (angel.getAngelType() != AngelType.Spawner && hero.isAlive()) {
+                                    hero.notifyObserver(angel);
+                                    hero.accept(angel);
+                                } else {
+                                    if (angel.getAngelType() == AngelType.Spawner && !(hero.isAlive())) {
+                                        hero.notifyObserver(angel);
+                                        hero.accept(angel);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                buffer.newLine();
+                System.out.println();
+
             }
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
-        printScoreboard(out);
+        printScoreboard();
     }
 
     void computeFights() {
@@ -51,6 +88,8 @@ public final class GameEngine {
                 if (allPlayers.get(i).getPosition().equals(allPlayers.get(j).getPosition())) {
                     if (allPlayers.get(i).isAlive() && allPlayers.get(j).isAlive()) {
                         // Wizard attacks last so I can compute damage for Deflect
+                        System.out.println(allPlayers.get(i));
+                        System.out.println(allPlayers.get(j));
                         if (allPlayers.get(i).getType().equals(PlayerType.Wizard)) {
                             allPlayers.get(i).takeDamage(allPlayers.get(j));
                             allPlayers.get(j).takeDamage(allPlayers.get(i));
@@ -70,14 +109,22 @@ public final class GameEngine {
     }
 
     void checkExpAndLevelUp(final Player p1, final Player p2) {
-        if (!p1.isAlive()) {
-            p2.setXp(p2.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
-                    - (p2.getLevel() - p1.getLevel()) * Constants.LVL_DIF_MULTIP));
-        }
         if (!p2.isAlive()) {
-            p1.setXp(p1.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
-                    - (p1.getLevel() - p2.getLevel()) * Constants.LVL_DIF_MULTIP));
+            if(p1.isAlive()) {
+                p1.setXp(p1.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
+                        - (p1.getLevel() - p2.getLevel()) * Constants.LVL_DIF_MULTIP));
+            }
+            p2.notifyObserver(p1);
         }
+
+        if (!p1.isAlive()) {
+            if(p2.isAlive()) {
+                p2.setXp(p2.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
+                        - (p2.getLevel() - p1.getLevel()) * Constants.LVL_DIF_MULTIP));
+            }
+            p1.notifyObserver(p2);
+        }
+
         if (p1.isAlive()) {
             p1.levelUp();
         }
@@ -94,18 +141,18 @@ public final class GameEngine {
         }
     }
 
-    void printScoreboard(final String out) {
+    void printScoreboard() {
         try {
-            FileWriter fout = new FileWriter(out);
-            BufferedWriter buffer = new BufferedWriter(fout);
+            buffer.write("~~ Results ~~");
+            buffer.newLine();
             for (Player hero : allPlayers) {
                 buffer.write(hero.toString());
                 buffer.newLine();
                 System.out.println(hero);
             }
             buffer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
     }
 }

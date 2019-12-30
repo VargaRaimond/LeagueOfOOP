@@ -24,6 +24,10 @@ public class SmallAngel extends Angel {
         public static final float WIZARD_DMG = 0.1f;
     }
 
+    public boolean isGood() {
+        return true;
+    }
+
     public void visit(Knight knight) {
         if (knight.isAlive()) {
             knight.updateAbilities(Modifiers.KNIGHT_DMG);

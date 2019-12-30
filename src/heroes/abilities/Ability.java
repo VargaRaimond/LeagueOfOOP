@@ -20,6 +20,10 @@ public abstract class Ability {
         modifierByRace.putAll(raceModifiers);
     }
 
+    public Ability(final Ability other) {
+        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace);
+    }
+
     /**
      * Calculates base damage dealt by an ability.
      * @param level the level of the player casting the ability

@@ -19,6 +19,10 @@ public class Spawner extends Angel{
         public static final int WIZARD = 120;
     }
 
+    public boolean isGood() {
+        return true;
+    }
+
     public void visit(Knight knight) {
         if(!knight.isAlive()) {
             knight.setCurrentHp(Modifiers.KNIGHT);

@@ -5,6 +5,7 @@ import heroes.abilities.AbilityFactory;
 import heroes.abilities.AbilityType;
 import heroes.abilities.Fireblast;
 import heroes.abilities.Ignite;
+import heroes.strategies.PyroStrategy;
 import map.LandType;
 
 import java.awt.Point;
@@ -14,8 +15,8 @@ public final class Pyromancer extends Player {
     private Fireblast fireblast;
     private Ignite ignite;
 
-    public Pyromancer(final Point coordinates, final int baseHp, final int hpScale) {
-        super(coordinates, baseHp, hpScale);
+    public Pyromancer(final Point coordinates, final int baseHp, final int hpScale, final int id) {
+        super(coordinates, baseHp, hpScale, id);
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         fireblast = (Fireblast) abilityFactory.getAbility(AbilityType.Fireblast);
@@ -23,6 +24,7 @@ public final class Pyromancer extends Player {
 
         type = PlayerType.Pyromancer;
         landWithBonus = LandType.Volcanic;
+        strategy = new PyroStrategy();
     }
 
     @Override

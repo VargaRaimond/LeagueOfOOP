@@ -17,7 +17,9 @@ public final class Drain extends Ability {
         float dmg = Math.min(Constants.DRAIN_BASE_SCALE * player.getMaxHp(), player.getCurrentHp());
         float percent = baseDamage + level * dmgScalePerLevel;
         percent += percent * landModifier;
+        System.out.println(percent + "Prea mare");
         percent += percent * modifierByRace.get(player.getType());
+        System.out.println(percent + "Prea mare");
         return Math.round(dmg * percent);
     }
 }

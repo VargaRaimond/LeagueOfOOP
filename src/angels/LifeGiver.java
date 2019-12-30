@@ -19,27 +19,36 @@ public class LifeGiver extends Angel{
         public static final int WIZARD = 120;
     }
 
+    public boolean isGood() {
+        return true;
+    }
+
     public void visit(final Knight knight) {
-        if(knight.isAlive()) {
-            knight.setCurrentHp(knight.getCurrentHp() + Modifiers.KNIGHT);
+        knight.setCurrentHp(knight.getCurrentHp() + Modifiers.KNIGHT);
+        if(knight.getCurrentHp() > knight.getMaxHp()) {
+            knight.setCurrentHp(knight.getMaxHp());
         }
+
     }
 
     public void visit(final Pyromancer pyromancer) {
-        if(pyromancer.isAlive()) {
-            pyromancer.setCurrentHp(pyromancer.getCurrentHp() + Modifiers.PYRO);
+        pyromancer.setCurrentHp(pyromancer.getCurrentHp() + Modifiers.PYRO);
+        if(pyromancer.getCurrentHp() > pyromancer.getMaxHp()) {
+            pyromancer.setCurrentHp(pyromancer.getMaxHp());
         }
     }
 
     public void visit(final Wizard wizard) {
-        if(wizard.isAlive()) {
-            wizard.setCurrentHp(wizard.getCurrentHp() + Modifiers.WIZARD);
+        wizard.setCurrentHp(wizard.getCurrentHp() + Modifiers.WIZARD);
+        if(wizard.getCurrentHp() > wizard.getMaxHp()) {
+            wizard.setCurrentHp(wizard.getMaxHp());
         }
     }
 
     public void visit(final Rogue rogue) {
-        if(rogue.isAlive()) {
-            rogue.setCurrentHp(rogue.getCurrentHp() + Modifiers.ROGUE);
+        rogue.setCurrentHp(rogue.getCurrentHp() + Modifiers.ROGUE);
+        if(rogue.getCurrentHp() > rogue.getMaxHp()) {
+            rogue.setCurrentHp(rogue.getMaxHp());
         }
     }
 }

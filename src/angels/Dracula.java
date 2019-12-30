@@ -24,6 +24,10 @@ public class Dracula extends Angel {
         public static final float WIZARD_DMG = -0.4f;
     }
 
+    public boolean isGood() {
+        return false;
+    }
+
     public void visit(Knight knight) {
         if (knight.isAlive()) {
             knight.updateAbilities(Modifiers.KNIGHT_DMG);

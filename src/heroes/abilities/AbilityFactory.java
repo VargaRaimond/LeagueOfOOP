@@ -32,7 +32,7 @@ public final class AbilityFactory {
         public static final float PYRO = -0.1f;
         public static final float ROGUE = -0.2f;
         public static final float BASE = 0.2f;
-        public static final float LVL_SCALE = 0.5f;
+        public static final float LVL_SCALE = 0.05f;
     }
 
     private static class FireblastDmg {

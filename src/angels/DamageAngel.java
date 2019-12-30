@@ -19,6 +19,10 @@ public class DamageAngel extends Angel {
         public static final float WIZARD = 0.4f;
     }
 
+    public boolean isGood() {
+        return true;
+    }
+
     public void visit(Knight knight) {
         if (knight.isAlive()) {
             knight.updateAbilities(Modifiers.KNIGHT);

@@ -20,6 +20,10 @@ public class XPAngel extends Angel {
         public static final int WIZARD = 60;
     }
 
+    public boolean isGood() {
+        return true;
+    }
+
     public void visit(Knight knight) {
         if(knight.isAlive()) {
             knight.setXp(knight.getXp() + Modifiers.KNIGHT);

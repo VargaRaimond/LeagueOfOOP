@@ -1,14 +1,20 @@
 package heroes;
 
+import angels.Angel;
 import common.Constants;
 import common.HeroVisitable;
+import common.Observable;
+import heroes.strategies.HeroStrategy;
 import map.LandType;
 import map.Map;
 import map.MapCell;
+import wizard.GreatWizard;
+import wizard.Observer;
 
 import java.awt.Point;
 
-public abstract class Player implements HeroVisitable {
+public abstract class Player implements HeroVisitable, Observable {
+    protected int id;
     protected PlayerType type;
     protected Point coordinates;
     private int maxHp;
@@ -21,13 +27,16 @@ public abstract class Player implements HeroVisitable {
     protected int currentDotDuration;
     protected int currentDotDamage;
     protected boolean stunned;
+    protected HeroStrategy strategy;
+    protected Observer greatWizard;
 
-    Player(final Point coordinates, final int baseHp, final int hpScale) {
+    Player(final Point coordinates, final int baseHp, final int hpScale, final int id) {
         this.coordinates = coordinates;
         maxHp = baseHp;
         currentHp = baseHp;
         hpScalePerLevel = hpScale;
         currentLand = Map.getInstance().getCellAt(coordinates);
+        this.id = id;
     }
 
     public final boolean isAlive() {
@@ -37,6 +46,7 @@ public abstract class Player implements HeroVisitable {
     public final void levelUp() {
         while (xp >= Constants.MIN_XP + level * Constants.XP_LVL_MULTIP) {
             level++;
+            notifyObserver();
             maxHp += hpScalePerLevel;
             currentHp = maxHp;
         }
@@ -94,6 +104,10 @@ public abstract class Player implements HeroVisitable {
         this.stunned = stunned;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public final PlayerType getType() {
         return type;
     }
@@ -126,6 +140,7 @@ public abstract class Player implements HeroVisitable {
             default : break;
         }
         currentLand = Map.getInstance().getCellAt(coordinates);
+        strategy.useStrategy(this);
     }
 
     public abstract void takeDamage(Player other);
@@ -139,5 +154,20 @@ public abstract class Player implements HeroVisitable {
     public abstract void dealDamage(Pyromancer pyromancer);
 
     public abstract void updateAbilities(final float changer);
+
+    public final void notifyObserver() {
+        greatWizard = GreatWizard.getInstance();
+        greatWizard.update(this);
+    }
+
+    public final void notifyObserver(Player other) {
+        greatWizard = GreatWizard.getInstance();
+        greatWizard.update(this, other);
+    }
+
+    public final void notifyObserver(Angel other) {
+        greatWizard = GreatWizard.getInstance();
+        greatWizard.update(other, this);
+    }
 
 }

@@ -18,6 +18,11 @@ public class DarkAngel extends Angel {
         public static final int ROGUE = 10;
         public static final int WIZARD = 20;
     }
+
+    public boolean isGood() {
+        return false;
+    }
+
     // TODO update obervable to know if i killed someone
     public void visit(final Knight knight) {
         if(knight.isAlive()) {
