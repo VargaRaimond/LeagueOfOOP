@@ -7,8 +7,8 @@ import heroes.Wizard;
 
 import java.awt.Point;
 
-public class DarkAngel extends Angel {
-    public DarkAngel(AngelType type, Point coordinates) {
+public final class DarkAngel extends Angel {
+    public DarkAngel(final AngelType type, final Point coordinates) {
         super(type, coordinates);
     }
 
@@ -23,28 +23,20 @@ public class DarkAngel extends Angel {
         return false;
     }
 
-    // TODO update obervable to know if i killed someone
+    // decrease hero's hit points
     public void visit(final Knight knight) {
-        if(knight.isAlive()) {
-            knight.setCurrentHp(knight.getCurrentHp() - Modifiers.KNIGHT);
-        }
+        knight.setCurrentHp(knight.getCurrentHp() - Modifiers.KNIGHT);
     }
 
     public void visit(final Pyromancer pyromancer) {
-        if(pyromancer.isAlive()) {
-            pyromancer.setCurrentHp(pyromancer.getCurrentHp() - Modifiers.PYRO);
-        }
+        pyromancer.setCurrentHp(pyromancer.getCurrentHp() - Modifiers.PYRO);
     }
 
     public void visit(final Wizard wizard) {
-        if(wizard.isAlive()) {
-            wizard.setCurrentHp(wizard.getCurrentHp() - Modifiers.WIZARD);
-        }
+        wizard.setCurrentHp(wizard.getCurrentHp() - Modifiers.WIZARD);
     }
 
     public void visit(final Rogue rogue) {
-        if(rogue.isAlive()) {
-            rogue.setCurrentHp(rogue.getCurrentHp() - Modifiers.ROGUE);
-        }
+        rogue.setCurrentHp(rogue.getCurrentHp() - Modifiers.ROGUE);
     }
 }

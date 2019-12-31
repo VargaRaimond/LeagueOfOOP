@@ -23,7 +23,7 @@ public final class AbilityFactory {
         public static final float ROGUE = 0.2f;
         public static final float WIZARD = 0f;
         public static final float BASE = 0.35f;
-        public static final float LVL_SCALE = 0.2f;
+        public static final float LVL_SCALE = 0.02f;
     }
 
     private static class DrainDmg {

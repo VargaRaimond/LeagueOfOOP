@@ -7,8 +7,8 @@ import heroes.Wizard;
 
 import java.awt.Point;
 
-public class LifeGiver extends Angel{
-    public LifeGiver(AngelType type, Point coordinates) {
+public final class LifeGiver extends Angel {
+    public LifeGiver(final AngelType type, final Point coordinates) {
         super(type, coordinates);
     }
 
@@ -23,9 +23,10 @@ public class LifeGiver extends Angel{
         return true;
     }
 
+    // heal a hero
     public void visit(final Knight knight) {
         knight.setCurrentHp(knight.getCurrentHp() + Modifiers.KNIGHT);
-        if(knight.getCurrentHp() > knight.getMaxHp()) {
+        if (knight.getCurrentHp() > knight.getMaxHp()) {
             knight.setCurrentHp(knight.getMaxHp());
         }
 
@@ -33,21 +34,21 @@ public class LifeGiver extends Angel{
 
     public void visit(final Pyromancer pyromancer) {
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() + Modifiers.PYRO);
-        if(pyromancer.getCurrentHp() > pyromancer.getMaxHp()) {
+        if (pyromancer.getCurrentHp() > pyromancer.getMaxHp()) {
             pyromancer.setCurrentHp(pyromancer.getMaxHp());
         }
     }
 
     public void visit(final Wizard wizard) {
         wizard.setCurrentHp(wizard.getCurrentHp() + Modifiers.WIZARD);
-        if(wizard.getCurrentHp() > wizard.getMaxHp()) {
+        if (wizard.getCurrentHp() > wizard.getMaxHp()) {
             wizard.setCurrentHp(wizard.getMaxHp());
         }
     }
 
     public void visit(final Rogue rogue) {
         rogue.setCurrentHp(rogue.getCurrentHp() + Modifiers.ROGUE);
-        if(rogue.getCurrentHp() > rogue.getMaxHp()) {
+        if (rogue.getCurrentHp() > rogue.getMaxHp()) {
             rogue.setCurrentHp(rogue.getMaxHp());
         }
     }

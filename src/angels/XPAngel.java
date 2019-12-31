@@ -7,9 +7,9 @@ import heroes.Wizard;
 
 import java.awt.Point;
 
-public class XPAngel extends Angel {
+public final class XPAngel extends Angel {
 
-    public XPAngel(AngelType type, Point coordinates) {
+    public XPAngel(final AngelType type, final Point coordinates) {
         super(type, coordinates);
     }
 
@@ -24,31 +24,20 @@ public class XPAngel extends Angel {
         return true;
     }
 
-    public void visit(Knight knight) {
-        if(knight.isAlive()) {
-            knight.setXp(knight.getXp() + Modifiers.KNIGHT);
-            knight.levelUp();
-        }
+    // give xp to a hero
+    public void visit(final Knight knight) {
+        knight.setXp(knight.getXp() + Modifiers.KNIGHT);
     }
 
-    public void visit(Pyromancer pyromancer) {
-        if(pyromancer.isAlive()) {
-            pyromancer.setXp(pyromancer.getXp() + Modifiers.PYRO);
-            pyromancer.levelUp();
-        }
+    public void visit(final Pyromancer pyromancer) {
+        pyromancer.setXp(pyromancer.getXp() + Modifiers.PYRO);
     }
 
-    public void visit(Wizard wizard) {
-        if(wizard.isAlive()) {
-            wizard.setXp(wizard.getXp() + Modifiers.WIZARD);
-            wizard.levelUp();
-        }
+    public void visit(final Wizard wizard) {
+        wizard.setXp(wizard.getXp() + Modifiers.WIZARD);
     }
 
-    public void visit(Rogue rogue) {
-        if(rogue.isAlive()) {
-            rogue.setXp(rogue.getXp() + Modifiers.ROGUE);
-            rogue.levelUp();
-        }
+    public void visit(final Rogue rogue) {
+        rogue.setXp(rogue.getXp() + Modifiers.ROGUE);
     }
 }

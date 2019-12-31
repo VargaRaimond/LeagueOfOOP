@@ -19,6 +19,7 @@ public final class GameEngine {
     private BufferedWriter buffer;
 
     public GameEngine(final String out) {
+        // prepare the buffer
         try {
             fout = new FileWriter(out);
             buffer = new BufferedWriter(fout);
@@ -34,11 +35,8 @@ public final class GameEngine {
             allAngels = input.getAngels();
             for (int roundNr = 0; roundNr < input.getRounds(); roundNr++) {
 
-                System.out.println("~~ Round " + (roundNr + 1) + " ~~");
                 buffer.write("~~ Round " + (roundNr + 1) + " ~~");
                 buffer.newLine();
-
-                moveHeroes(input.getMovesAt(roundNr));
 
                 for (Player hero : allPlayers) {
                     if (hero.getCurrentDotDamage() != 0 || hero.getCurrentDotDuration() != 0) {
@@ -50,6 +48,9 @@ public final class GameEngine {
                         }
                     }
                 }
+
+                moveHeroes(input.getMovesAt(roundNr));
+
                 computeFights();
 
                 // add angels for current round and apply their bonuses
@@ -59,12 +60,17 @@ public final class GameEngine {
                         for (Player hero : allPlayers) {
                             if (hero.getPosition().equals(angel.getPosition())) {
                                 if (angel.getAngelType() != AngelType.Spawner && hero.isAlive()) {
-                                    hero.notifyObserver(angel);
                                     hero.accept(angel);
+                                    hero.notifyObserver(angel);
+                                    // check if someone leveled up after interactions with angel
+                                    hero.levelUp();
                                 } else {
-                                    if (angel.getAngelType() == AngelType.Spawner && !(hero.isAlive())) {
-                                        hero.notifyObserver(angel);
+                                    // only the Spawner interacts with a dead hero
+                                    if (angel.getAngelType() == AngelType.Spawner
+                                            && !(hero.isAlive())) {
                                         hero.accept(angel);
+                                        hero.notifyObserver(angel);
+                                        hero.levelUp();
                                     }
                                 }
                             }
@@ -72,8 +78,6 @@ public final class GameEngine {
                     }
                 }
                 buffer.newLine();
-                System.out.println();
-
             }
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -88,8 +92,6 @@ public final class GameEngine {
                 if (allPlayers.get(i).getPosition().equals(allPlayers.get(j).getPosition())) {
                     if (allPlayers.get(i).isAlive() && allPlayers.get(j).isAlive()) {
                         // Wizard attacks last so I can compute damage for Deflect
-                        System.out.println(allPlayers.get(i));
-                        System.out.println(allPlayers.get(j));
                         if (allPlayers.get(i).getType().equals(PlayerType.Wizard)) {
                             allPlayers.get(i).takeDamage(allPlayers.get(j));
                             allPlayers.get(j).takeDamage(allPlayers.get(i));
@@ -110,21 +112,24 @@ public final class GameEngine {
 
     void checkExpAndLevelUp(final Player p1, final Player p2) {
         if (!p2.isAlive()) {
-            if(p1.isAlive()) {
+            // only give xp if they didn't kill each other
+            if (p1.isAlive()) {
                 p1.setXp(p1.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
                         - (p1.getLevel() - p2.getLevel()) * Constants.LVL_DIF_MULTIP));
             }
+            // notify observer that p1 killed p2
             p2.notifyObserver(p1);
         }
 
         if (!p1.isAlive()) {
-            if(p2.isAlive()) {
+            if (p2.isAlive()) {
                 p2.setXp(p2.getXp() + Math.max(Constants.NO_XP, Constants.BASE_KILL_XP
                         - (p2.getLevel() - p1.getLevel()) * Constants.LVL_DIF_MULTIP));
             }
             p1.notifyObserver(p2);
         }
 
+        // only level up if they didn't kill each other
         if (p1.isAlive()) {
             p1.levelUp();
         }
@@ -148,7 +153,6 @@ public final class GameEngine {
             for (Player hero : allPlayers) {
                 buffer.write(hero.toString());
                 buffer.newLine();
-                System.out.println(hero);
             }
             buffer.close();
         } catch (Exception e1) {

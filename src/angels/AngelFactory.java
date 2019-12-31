@@ -5,6 +5,8 @@ import java.awt.Point;
 public final class AngelFactory {
     private static AngelFactory instance;
 
+    // singleton
+    private AngelFactory() { }
 
     public static AngelFactory getInstance() {
         if (instance == null) {
@@ -13,7 +15,7 @@ public final class AngelFactory {
         return instance;
     }
     public static Angel createAngel(final String angelName, final Point angelPosition) {
-        switch(angelName) {
+        switch (angelName) {
             case("LifeGiver"):
                 return new LifeGiver(AngelType.LifeGiver, angelPosition);
             case("Dracula"):

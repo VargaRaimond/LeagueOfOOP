@@ -30,6 +30,10 @@ public final class Map {
         return instance;
     }
 
+    public int getSize() {
+        return map.size();
+    }
+
     public static Map getInstance() {
         return instance;
     }

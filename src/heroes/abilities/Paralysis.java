@@ -1,5 +1,6 @@
 package heroes.abilities;
 
+import common.Constants;
 import heroes.Player;
 import heroes.PlayerType;
 
@@ -11,8 +12,8 @@ public final class Paralysis extends Ability {
     private float dotLvlScale;
     private int dotDuration;
 
-    Paralysis(final Map<PlayerType, Float> raceModifiers, final float baseDot,
-              final float dotLvlScale, final int dotDuration) {
+    Paralysis(final Map<PlayerType, Float> raceModifiers, final Float baseDot,
+              final Float dotLvlScale, final int dotDuration) {
         super(0, 0, raceModifiers);
         type = AbilityType.Paralysis;
         baseDotDmg = baseDot;
@@ -20,10 +21,20 @@ public final class Paralysis extends Ability {
         this.dotDuration = dotDuration;
     }
 
-    public int computeDot(final Player player, final int level, final float landModifier) {
-        float dot = baseDotDmg + level * dotLvlScale;
+    public Paralysis(final Paralysis other) {
+        this(other.modifierByRace, other.baseDotDmg, other.dotLvlScale, other.dotDuration);
+    }
+
+    public int addRaceModif(final Player player, final int dmg) {
+        return Math.round(dmg + dmg * modifierByRace.get(player.getType())
+                - Constants.FLOAT_DIFFERENCE);
+    }
+
+    public int computeDot(final Player player, final int level, final Float landModifier) {
+        Float dot = baseDotDmg + level * dotLvlScale;
         dot += dot * landModifier;
-        player.setCurrentDotDamage(Math.round(dot + dot * modifierByRace.get(player.getType())));
+        player.setCurrentDotDamage(Math.round(dot + dot * (modifierByRace.get(player.getType())
+                - Constants.FLOAT_DIFFERENCE)));
         if (landModifier != 0f) {
             player.setCurrentDotDuration(2 * dotDuration);
         } else {

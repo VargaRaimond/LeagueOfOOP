@@ -20,7 +20,9 @@ public final class Pyromancer extends Player {
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         fireblast = (Fireblast) abilityFactory.getAbility(AbilityType.Fireblast);
+        fireblast = new Fireblast(fireblast);
         ignite = (Ignite) abilityFactory.getAbility(AbilityType.Ignite);
+        ignite = new Ignite(ignite);
 
         type = PlayerType.Pyromancer;
         landWithBonus = LandType.Volcanic;
@@ -85,12 +87,12 @@ public final class Pyromancer extends Player {
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
     }
 
-    public void accept(HeroVisitor angel) {
+    public void accept(final HeroVisitor angel) {
         angel.visit(this);
     }
 
     @Override
-    public void updateAbilities(float changer) {
+    public void updateAbilities(final Float changer) {
         fireblast.updateModifiers(changer);
         ignite.updateModifiers(changer);
     }

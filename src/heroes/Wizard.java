@@ -21,7 +21,9 @@ public final class Wizard extends Player {
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         drain = (Drain) (abilityFactory.getAbility(AbilityType.Drain));
+        drain = new Drain(drain);
         deflect = (Deflect) (abilityFactory.getAbility(AbilityType.Deflect));
+        deflect = new Deflect(deflect);
 
         type = PlayerType.Wizard;
         landWithBonus = LandType.Desert;
@@ -43,7 +45,6 @@ public final class Wizard extends Player {
         // only Drain
         int drainDmg;
         drainDmg = drain.computeBaseDamage(wizard, level, getLandBonus());
-        System.out.println(drainDmg + " Atata poate");
         wizard.setCurrentHp(wizard.getCurrentHp() - drainDmg);
     }
 
@@ -73,16 +74,15 @@ public final class Wizard extends Player {
 
         drainDmg = drain.computeBaseDamage(pyromancer, level, getLandBonus());
         deflectDmg = deflect.computeBaseDamage(pyromancer, level, getLandBonus(), dmgForDeflect);
-
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - drainDmg - deflectDmg);
     }
 
-    public void accept(HeroVisitor angel) {
+    public void accept(final HeroVisitor angel) {
         angel.visit(this);
     }
 
     @Override
-    public void updateAbilities(float changer) {
+    public void updateAbilities(final Float changer) {
         drain.updateModifiers(changer);
         deflect.updateModifiers(changer);
     }

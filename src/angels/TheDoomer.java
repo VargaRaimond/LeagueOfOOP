@@ -8,8 +8,8 @@ import heroes.Wizard;
 
 import java.awt.Point;
 
-public class TheDoomer extends Angel {
-    public TheDoomer(AngelType type, Point coordinates) {
+public final class TheDoomer extends Angel {
+    public TheDoomer(final AngelType type, final Point coordinates) {
         super(type, coordinates);
     }
 
@@ -17,16 +17,17 @@ public class TheDoomer extends Angel {
         return false;
     }
 
-    public void visit(Knight knight) {
+    // kill a hero
+    public void visit(final Knight knight) {
         knight.setCurrentHp(Constants.DEAD_PLAYER);
     }
-    public void visit(Pyromancer pyromancer) {
+    public void visit(final Pyromancer pyromancer) {
         pyromancer.setCurrentHp(Constants.DEAD_PLAYER);
     }
-    public void visit(Wizard wizard) {
+    public void visit(final Wizard wizard) {
         wizard.setCurrentHp(Constants.DEAD_PLAYER);
     }
-    public void visit(Rogue rogue) {
+    public void visit(final Rogue rogue) {
         rogue.setCurrentHp(Constants.DEAD_PLAYER);
     }
 }

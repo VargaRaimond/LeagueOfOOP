@@ -7,8 +7,8 @@ import heroes.Wizard;
 
 import java.awt.Point;
 
-public class Dracula extends Angel {
-    public Dracula(AngelType type, Point coordinates) {
+public final class Dracula extends Angel {
+    public Dracula(final AngelType type, final Point coordinates) {
         super(type, coordinates);
     }
 
@@ -28,28 +28,21 @@ public class Dracula extends Angel {
         return false;
     }
 
-    public void visit(Knight knight) {
-        if (knight.isAlive()) {
-            knight.updateAbilities(Modifiers.KNIGHT_DMG);
-            knight.setCurrentHp(knight.getCurrentHp() - Modifiers.KNIGHT_HP);
-        }
+    // decrease hero's hp and dmg modifiers
+    public void visit(final Knight knight) {
+        knight.updateAbilities(Modifiers.KNIGHT_DMG);
+        knight.setCurrentHp(knight.getCurrentHp() - Modifiers.KNIGHT_HP);
     }
-    public void visit(Pyromancer pyromancer) {
-        if (pyromancer.isAlive()) {
-            pyromancer.updateAbilities(Modifiers.PYRO_DMG);
-            pyromancer.setCurrentHp(pyromancer.getCurrentHp() - Modifiers.PYRO_HP);
-        }
+    public void visit(final Pyromancer pyromancer) {
+        pyromancer.updateAbilities(Modifiers.PYRO_DMG);
+        pyromancer.setCurrentHp(pyromancer.getCurrentHp() - Modifiers.PYRO_HP);
     }
-    public void visit(Wizard wizard) {
-        if (wizard.isAlive()) {
-            wizard.updateAbilities(Modifiers.WIZARD_DMG);
-            wizard.setCurrentHp(wizard.getCurrentHp() - Modifiers.WIZARD_HP);
-        }
+    public void visit(final Wizard wizard) {
+        wizard.updateAbilities(Modifiers.WIZARD_DMG);
+        wizard.setCurrentHp(wizard.getCurrentHp() - Modifiers.WIZARD_HP);
     }
-    public void visit(Rogue rogue) {
-        if (rogue.isAlive()) {
-            rogue.updateAbilities(Modifiers.ROGUE_DMG);
-            rogue.setCurrentHp(rogue.getCurrentHp() - Modifiers.ROGUE_HP);
-        }
+    public void visit(final Rogue rogue) {
+        rogue.updateAbilities(Modifiers.ROGUE_DMG);
+        rogue.setCurrentHp(rogue.getCurrentHp() - Modifiers.ROGUE_HP);
     }
 }

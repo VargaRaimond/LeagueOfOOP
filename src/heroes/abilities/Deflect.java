@@ -14,6 +14,10 @@ public final class Deflect extends Ability {
         type = AbilityType.Deflect;
     }
 
+    public Deflect(final Deflect other) {
+        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace);
+    }
+
     public int computeBaseDamage(final Player player, final int heroLvl, final float landModifier,
                                  final float damageTaken) {
         float percent;

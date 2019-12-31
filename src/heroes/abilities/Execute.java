@@ -17,11 +17,11 @@ public final class Execute extends Ability {
         executePercent = baseInstKill;
     }
 
-    public int computeBaseDamage(final Player player, final int level, final float landModifier) {
-        if (player.getCurrentHp() <= player.getMaxHp()
-                * (executePercent + Constants.EXECUTE_SCALE * level)) {
-            return player.getCurrentHp();
-        }
+    public Execute(final Execute other) {
+        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace, other.executePercent);
+    }
+
+    public int computeBaseDamage(final int level, final float landModifier) {
         return super.computeBaseDamage(level, landModifier);
     }
 

@@ -1,4 +1,4 @@
-package wizard;
+package common;
 
 import angels.Angel;
 import heroes.Player;

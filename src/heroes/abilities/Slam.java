@@ -15,6 +15,10 @@ public final class Slam extends Ability {
         this.stunDuration = stunDuration;
     }
 
+    public Slam(final Slam other) {
+        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace, other.stunDuration);
+    }
+
     public void updateStun(final Player player) {
         player.setCurrentDotDuration(stunDuration);
         player.setStunned(true);

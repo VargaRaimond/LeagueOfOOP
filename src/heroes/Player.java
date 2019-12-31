@@ -9,7 +9,7 @@ import map.LandType;
 import map.Map;
 import map.MapCell;
 import wizard.GreatWizard;
-import wizard.Observer;
+import common.Observer;
 
 import java.awt.Point;
 
@@ -46,6 +46,7 @@ public abstract class Player implements HeroVisitable, Observable {
     public final void levelUp() {
         while (xp >= Constants.MIN_XP + level * Constants.XP_LVL_MULTIP) {
             level++;
+            // notify the greatWizard
             notifyObserver();
             maxHp += hpScalePerLevel;
             currentHp = maxHp;
@@ -104,7 +105,7 @@ public abstract class Player implements HeroVisitable, Observable {
         this.stunned = stunned;
     }
 
-    public int getId() {
+    public final int getId() {
         return id;
     }
 
@@ -139,7 +140,12 @@ public abstract class Player implements HeroVisitable, Observable {
                 break;
             default : break;
         }
-        currentLand = Map.getInstance().getCellAt(coordinates);
+        // let heroes walk outside map - checker issue
+        if (coordinates.x >= 0 && coordinates.y >= 0 && coordinates.x < Map.getInstance().getSize()
+                && coordinates.y < Map.getInstance().getSize()) {
+            currentLand = Map.getInstance().getCellAt(coordinates);
+        }
+        // choose a strategy
         strategy.useStrategy(this);
     }
 
@@ -153,19 +159,19 @@ public abstract class Player implements HeroVisitable, Observable {
 
     public abstract void dealDamage(Pyromancer pyromancer);
 
-    public abstract void updateAbilities(final float changer);
+    public abstract void updateAbilities(Float changer);
 
     public final void notifyObserver() {
         greatWizard = GreatWizard.getInstance();
         greatWizard.update(this);
     }
 
-    public final void notifyObserver(Player other) {
+    public final void notifyObserver(final Player other) {
         greatWizard = GreatWizard.getInstance();
         greatWizard.update(this, other);
     }
 
-    public final void notifyObserver(Angel other) {
+    public final void notifyObserver(final Angel other) {
         greatWizard = GreatWizard.getInstance();
         greatWizard.update(other, this);
     }

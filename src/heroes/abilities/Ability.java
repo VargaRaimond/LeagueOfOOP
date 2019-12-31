@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Ability {
-    protected float baseDamage;
-    protected float dmgScalePerLevel;
+    protected Float baseDamage;
+    protected Float dmgScalePerLevel;
     protected AbilityType type;
     protected Map<PlayerType, Float> modifierByRace;
 
@@ -20,10 +20,6 @@ public abstract class Ability {
         modifierByRace.putAll(raceModifiers);
     }
 
-    public Ability(final Ability other) {
-        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace);
-    }
-
     /**
      * Calculates base damage dealt by an ability.
      * @param level the level of the player casting the ability
@@ -31,18 +27,24 @@ public abstract class Ability {
      * @return the damage dealt by the ability after level scale and
      * land modifier
      */
-    public int computeBaseDamage(final int level, final float landModifier) {
-        float dmg = baseDamage + level * dmgScalePerLevel;
+    public int computeBaseDamage(final int level, final Float landModifier) {
+        Float dmg = baseDamage + level * dmgScalePerLevel;
         dmg += dmg * landModifier;
         return Math.round(dmg);
     }
 
-    public final int addRaceModif(final Player player, final int dmg) {
+    /**
+     * Adds race modifiers on damage.
+     * @param player the hero which will be attacked
+     * @param dmg damage without modifiers
+     * @return final damage
+     */
+    public int addRaceModif(final Player player, final int dmg) {
         return Math.round(dmg + dmg * modifierByRace.get(player.getType()));
     }
 
-    public final void updateModifiers(final float changer) {
-        for(Map.Entry<PlayerType, Float> element : modifierByRace.entrySet()) {
+    public final void updateModifiers(final Float changer) {
+        for (Map.Entry<PlayerType, Float> element : modifierByRace.entrySet()) {
             element.setValue(element.getValue() + changer);
         }
     }

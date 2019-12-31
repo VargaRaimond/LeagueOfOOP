@@ -1,6 +1,7 @@
 package heroes.abilities;
 
 import common.Constants;
+import heroes.Player;
 import heroes.PlayerType;
 
 import java.util.Map;
@@ -16,6 +17,16 @@ public final class Backstab extends Ability {
         type = AbilityType.Backstab;
         this.roundsToCrit = roundsToCrit;
         critCooldown = 0;
+    }
+
+    public Backstab(final Backstab other) {
+        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace, other.roundsToCrit);
+        critCooldown = 0;
+    }
+
+    public int addRaceModif(final Player player, final int dmg) {
+        return Math.round(dmg + dmg * modifierByRace.get(player.getType())
+                - Constants.FLOAT_DIFFERENCE);
     }
 
     public int computeBaseDamage(final int level, final float landModifier) {

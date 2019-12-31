@@ -62,11 +62,12 @@ import java.util.Scanner;
 
                 angels = new ArrayList<>();
                 AngelFactory angelFactory = AngelFactory.getInstance();
-                for(int i = 0; i < nrRounds; i++) {
+                for (int i = 0; i < nrRounds; i++) {
                     angels.add(new ArrayList<>());
                     int nrAngels = sc.nextInt();
 
-                    for(int angelIt = 0; angelIt < nrAngels; angelIt++) {
+                    for (int angelIt = 0; angelIt < nrAngels; angelIt++) {
+                        // separate each angel from their position
                         sc.useDelimiter(",");
                         sc.skip(" ");
                         String tempAngel = sc.next();

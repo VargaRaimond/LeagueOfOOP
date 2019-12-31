@@ -7,8 +7,8 @@ import heroes.Wizard;
 
 import java.awt.Point;
 
-public class Spawner extends Angel{
-    public Spawner(AngelType type, Point coordinates) {
+public final class Spawner extends Angel {
+    public Spawner(final AngelType type, final Point coordinates) {
         super(type, coordinates);
     }
 
@@ -23,26 +23,27 @@ public class Spawner extends Angel{
         return true;
     }
 
-    public void visit(Knight knight) {
-        if(!knight.isAlive()) {
+    // revive a hero
+    public void visit(final Knight knight) {
+        if (!knight.isAlive()) {
             knight.setCurrentHp(Modifiers.KNIGHT);
         }
     }
 
-    public void visit(Pyromancer pyromancer) {
-        if(!pyromancer.isAlive()) {
+    public void visit(final Pyromancer pyromancer) {
+        if (!pyromancer.isAlive()) {
             pyromancer.setCurrentHp(Modifiers.PYRO);
         }
     }
 
-    public void visit(Wizard wizard) {
-        if(!wizard.isAlive()) {
+    public void visit(final Wizard wizard) {
+        if (!wizard.isAlive()) {
             wizard.setCurrentHp(Modifiers.WIZARD);
         }
     }
 
-    public void visit(Rogue rogue) {
-        if(!rogue.isAlive()) {
+    public void visit(final Rogue rogue) {
+        if (!rogue.isAlive()) {
             rogue.setCurrentHp(Modifiers.ROGUE);
         }
     }

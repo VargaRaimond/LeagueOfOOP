@@ -20,9 +20,15 @@ public final class Ignite extends Ability {
         this.dotDuration = dotDuration;
     }
 
+    public Ignite(final Ignite other) {
+        this(other.baseDamage, other.dmgScalePerLevel, other.modifierByRace,
+                other.baseDotDmg, other.dotLvlScale, other.dotDuration);
+    }
+
     public void computeDot(final Player player, final int level, final float landModifier) {
         float dot = baseDotDmg + level * dotLvlScale;
         dot += dot * landModifier;
+        dot = Math.round(dot);
         player.setCurrentDotDamage(Math.round(dot + dot * modifierByRace.get(player.getType())));
         player.setCurrentDotDuration(dotDuration);
         player.setStunned(false);

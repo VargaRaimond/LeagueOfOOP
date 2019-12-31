@@ -20,7 +20,9 @@ public final class Rogue extends Player {
 
         AbilityFactory abilityFactory = AbilityFactory.getInstance();
         backstab = (Backstab) abilityFactory.getAbility(AbilityType.Backstab);
+        backstab = new Backstab(backstab);
         paralysis = (Paralysis) abilityFactory.getAbility(AbilityType.Paralysis);
+        paralysis = new Paralysis(paralysis);
 
         type = PlayerType.Rogue;
         landWithBonus = LandType.Woods;
@@ -83,12 +85,12 @@ public final class Rogue extends Player {
         pyromancer.setCurrentHp(pyromancer.getCurrentHp() - finalDmg);
     }
 
-    public void accept(HeroVisitor angel) {
+    public void accept(final HeroVisitor angel) {
         angel.visit(this);
     }
 
     @Override
-    public void updateAbilities(float changer) {
+    public void updateAbilities(final Float changer) {
         backstab.updateModifiers(changer);
         paralysis.updateModifiers(changer);
     }

@@ -15,4 +15,5 @@ public final class Constants {
     public static final float BACKSTAB_CRIT = 1.5f;
     public static final float EXECUTE_SCALE = 0.01f;
     public static final int DEAD_PLAYER = 0;
+    public static final float FLOAT_DIFFERENCE = 0.00001f;
 }

@@ -3,7 +3,7 @@ package angels;
 import common.HeroVisitor;
 import common.Observable;
 import wizard.GreatWizard;
-import wizard.Observer;
+import common.Observer;
 
 import java.awt.Point;
 
@@ -14,20 +14,20 @@ public abstract class Angel implements HeroVisitor, Observable {
 
     public abstract boolean isGood();
 
-    public Angel(AngelType type, Point coordinates) {
+    public Angel(final AngelType type, final Point coordinates) {
         position = coordinates;
         angelType = type;
     }
 
-    public AngelType getAngelType() {
+    public final AngelType getAngelType() {
         return angelType;
     }
 
-    public Point getPosition() {
+    public final Point getPosition() {
         return position;
     }
 
-    public void notifyObserver() {
+    public final void notifyObserver() {
         greatWizard = GreatWizard.getInstance();
         greatWizard.update(this);
     }
